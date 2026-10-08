@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Felix Erkinheimo – AI Agent Consultant</title>
+<meta name="description" content="Felix Erkinheimo – AI agent consultant and freelancer. Lead generation agents, CRM data handling and full agent setups.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brand-navy: #022E4C;
+    --brand-steel: #517493;
+    --brand-wine: #56061D;
+    --brand-cream: #E2D9CB;
+    --bg: #EFEAE2;
+    --tint: rgba(2,46,76,.06);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; scroll-padding-top: 70px; }
+  body { font-family: "Segoe UI", system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--brand-navy); line-height: 1.5; }
+  a { color: inherit; }
+
+  header {
+    position: sticky; top: 0; z-index: 10; background: var(--bg);
+    border-bottom: 1px solid rgba(2,46,76,.15);
+  }
+  header .bar { max-width: 1100px; margin: 0 auto; padding: 0 24px; height: 60px; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  .logo { font-weight: 700; text-decoration: none; }
+  header nav { display: flex; gap: 1.4rem; flex-wrap: wrap; }
+  header nav a { text-decoration: none; font-size: .95rem; font-weight: 600; color: var(--brand-steel); }
+  header nav a:hover { color: var(--brand-wine); }
+
+  section { padding: 90px 24px; }
+  section.alt { background: var(--tint); }
+  .wrap { max-width: 1100px; margin: 0 auto; }
+  .center { text-align: center; }
+
+  .eyebrow { text-transform: uppercase; letter-spacing: .2em; font-size: .8rem; font-weight: 600; color: var(--brand-steel); margin-bottom: 1rem; }
+  h1 { font-size: clamp(2.6rem, 7vw, 4.8rem); line-height: 1.02; font-weight: 700; }
+  h2 { font-size: clamp(2rem, 4.5vw, 3rem); line-height: 1.1; margin-bottom: 2.2rem; font-weight: 700; }
+
+  .hero { display: flex; align-items: center; justify-content: space-between; gap: 3rem; min-height: calc(100vh - 260px); padding-top: 40px; padding-bottom: 50px; }
+  .hero .text { flex: 1; min-width: 0; }
+  .role { font-size: clamp(1.1rem, 2.2vw, 1.5rem); color: var(--brand-steel); margin: .8rem 0 1.8rem; }
+  .contact { display: flex; flex-wrap: wrap; gap: .8rem; margin-bottom: 2.5rem; }
+  .contact a.pill { display: inline-flex; align-items: center; gap: .6rem; padding: .65rem 1.2rem; border: 1.5px solid var(--brand-steel); border-radius: 99px; color: var(--brand-navy); text-decoration: none; font-weight: 600; font-size: 1rem; transition: .2s; }
+  .contact a.pill .ico { width: 20px; height: 20px; color: var(--brand-steel); transition: .2s; }
+  .contact a.pill:hover { background: var(--brand-wine); border-color: var(--brand-wine); color: var(--brand-cream); }
+  .contact a.pill:hover .ico { color: var(--brand-cream); }
+  .photo {
+    flex: none; width: clamp(200px, 30vw, 400px); aspect-ratio: 1; border-radius: 50%;
+    object-fit: cover; object-position: 50% 30%;
+    border: 8px solid var(--brand-steel); box-shadow: 0 0 0 6px var(--bg), 0 0 0 10px var(--brand-wine);
+  }
+
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; max-width: 700px; }
+  .stat { border-top: 3px solid var(--brand-steel); padding-top: 1rem; }
+  .stat b { display: block; font-size: clamp(2.6rem, 6vw, 4rem); line-height: 1; color: var(--brand-wine); }
+  .stat span { display: block; margin-top: .6rem; line-height: 1.4; }
+
+  .cards { --gap: 1.5rem; display: flex; flex-wrap: wrap; justify-content: center; gap: var(--gap); max-width: 1100px; }
+  .cards .card { flex: 1 1 280px; min-width: 280px; max-width: calc((100% - 2 * var(--gap)) / 3); }
+  @media (max-width: 800px) { .cards .card { max-width: none; } }
+  .card { background: var(--tint); padding: 1.8rem; border-radius: 6px; border-top: 6px solid var(--brand-wine); text-align: center; }
+  section.alt .card { background: var(--bg); }
+  .tag { display: inline-block; font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; color: var(--brand-steel); margin-bottom: .6rem; font-weight: 600; }
+  .card h3 { font-size: 1.3rem; margin-bottom: .6rem; }
+
+  .prices { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; max-width: 1100px; margin: 0 auto; }
+  .price { background: var(--tint); padding: 2.2rem; border-radius: 6px; border-top: 6px solid var(--brand-wine); }
+  .price small { font-size: .85rem; letter-spacing: .15em; text-transform: uppercase; color: var(--brand-steel); font-weight: 600; }
+  .price b { display: block; font-size: clamp(1.5rem, 3vw, 2.1rem); line-height: 1.1; margin: .5rem 0; color: var(--brand-steel); }
+  .note { margin-top: 2rem; opacity: .8; }
+
+  .btn { display: inline-block; background: var(--brand-wine); color: var(--brand-cream); text-decoration: none; padding: .9rem 1.8rem; border-radius: 4px; font-weight: 600; margin-top: 1rem; transition: .2s; }
+  .btn:hover { background: var(--brand-navy); }
+  .btn.ghost { background: transparent; color: var(--brand-navy); border: 2px solid var(--brand-steel); }
+  .btn.ghost:hover { background: var(--brand-steel); color: var(--brand-cream); }
+
+  footer { padding: 30px 24px; text-align: center; font-size: .9rem; color: var(--brand-steel); border-top: 1px solid rgba(2,46,76,.15); }
+  footer a:hover { color: var(--brand-wine); }
+
+
+  html { scrollbar-gutter: stable; }
+  .card.clickable { cursor: pointer; transition: transform .25s ease, box-shadow .25s ease; position: relative; }
+  .card.clickable:hover, .card.clickable:focus-visible { transform: translateY(-8px); box-shadow: 0 14px 28px rgba(2,46,76,.22); outline: none; }
+  .card .more { display: inline-block; margin-top: 1rem; font-size: .85rem; font-weight: 600; color: var(--brand-wine); }
+  .card .more::after { content: " +"; }
+  .card .detail { display: none; }
+
+  .backdrop { position: fixed; inset: 0; background: rgba(2,46,76,.5); opacity: 0; transition: opacity .3s ease; z-index: 50; }
+  .backdrop.on { opacity: 1; }
+  .expanded {
+    position: fixed; z-index: 60; background: var(--bg); color: var(--brand-navy);
+    border-top: 6px solid var(--brand-wine); border-radius: 6px; padding: 2rem 2.2rem 2.2rem;
+    box-shadow: 0 24px 60px rgba(2,46,76,.4); text-align: left; overflow: auto;
+    transition: left .35s ease, top .35s ease, width .35s ease, opacity .25s ease;
+  }
+  .expanded h3 { font-size: 1.6rem; margin-bottom: 1.2rem; padding-right: 2rem; }
+  .expanded .close { position: absolute; top: 10px; right: 14px; background: none; border: 0; font-size: 1.8rem; line-height: 1; color: var(--brand-steel); cursor: pointer; }
+  .expanded .close:hover { color: var(--brand-wine); }
+  .expanded .block { margin-bottom: 1.1rem; }
+  .expanded .block h4 { font-size: .75rem; letter-spacing: .15em; text-transform: uppercase; color: var(--brand-wine); margin-bottom: .25rem; }
+  .expanded .block p { line-height: 1.5; }
+  .expanded .stack { display: flex; flex-wrap: wrap; gap: .4rem; margin: 1.2rem 0 1rem; }
+  .expanded .stack span { font-size: .8rem; font-weight: 600; color: var(--brand-steel); border: 1px solid var(--brand-steel); border-radius: 99px; padding: .15rem .7rem; }
+  .expanded .btn { margin-top: .4rem; }
+
+  .price h3 { font-size: 1.25rem; margin-bottom: 1rem; }
+  .price p { margin-top: .8rem; line-height: 1.45; font-size: .98rem; }
+
+  .quote { position: relative; margin: 0; padding: 2.4rem 0 0 0; border-top: 1px solid rgba(2,46,76,.25); font-family: "Caveat", "Segoe Script", "Brush Script MT", cursive; font-weight: 500; font-size: clamp(1.8rem, 3.4vw, 2.8rem); line-height: 1.25; color: var(--brand-navy); max-width: 30em; }
+  .quote::before { content: "\201C"; position: absolute; top: .9rem; left: -.05em; font-size: 2.6em; line-height: 1; color: var(--brand-wine); opacity: .35; }
+  .quote { padding-left: 2.2rem; }
+  .quote .hl { color: var(--brand-wine); font-weight: 600; }
+  .iconbtn { display: inline-flex; align-items: center; gap: .6rem; margin: 1rem .4rem 0; }
+  .iconbtn .ico { width: 20px; height: 20px; }
+
+  section.alt .price { background: var(--bg); }
+  @media (prefers-reduced-motion: reduce) { .card.clickable, .expanded, .backdrop { transition: none; } }
+
+  @media (max-width: 800px) {
+    .hero { flex-direction: column-reverse; text-align: center; min-height: 0; gap: 2rem; }
+    .contact { justify-content: center; }
+      header nav { gap: .9rem; }
+    header nav a { font-size: .85rem; }
+    section { padding: 64px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="bar">
+    <a class="logo" href="#top">Felix Erkinheimo</a>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section id="about">
+    <div class="wrap hero">
+      <div class="text">
+        <div class="eyebrow">AI Agent Consultant &amp; Freelancer</div>
+        <h1>Felix Erkinheimo</h1>
+        <p class="role">Building AI agents that do real work for your business</p>
+        <div class="contact">
+          <a class="pill" href="mailto:felix@erkinheimo.info"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>felix@erkinheimo.info</a>
+          <a class="pill" href="https://www.linkedin.com/in/felix-erkinheimo-32774b150" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.75h4v11.25H3V9.75zm7 0h3.83v1.54h.06c.53-1 1.84-2.06 3.78-2.06 4.04 0 4.78 2.66 4.78 6.12V21h-4v-5.1c0-1.22-.02-2.78-1.7-2.78-1.7 0-1.96 1.33-1.96 2.69V21h-4V9.75z"/></svg>LinkedIn</a>
+        </div>
+      </div>
+      <img class="photo" src="assets/photo.png" alt="Felix Erkinheimo">
+    </div>
+    <div class="wrap">
+      <blockquote class="quote">
+  I have spent a decade scaling and leading sales and marketing teams. Now I build AI agents and workflows that <span class="hl">actually move the pipeline.</span>
+</blockquote>
+    </div>
+  </section>
+
+  <section id="projects" class="alt center">
+    <div class="wrap">
+      <div class="eyebrow">Past projects</div>
+      <h2>AI agents I've built</h2>
+      <div class="cards">
+        <div class="card clickable" tabindex="0" role="button" aria-haspopup="dialog">
+          <span class="tag">Videopalat</span>
+          <h3>Email campaign builder agent</h3>
+          <p>AI agent that builds email campaigns: pulls the target audience from CRMs and drafts the messages.</p>
+          <span class="more">Why, what &amp; how</span>
+          <div class="detail">
+            <div class="block"><h4>Why</h4><p>Videopalat wanted to test email as a sales channel for its short-video service. Each campaign needed a target audience and message copy built by hand.</p></div>
+            <div class="block"><h4>What</h4><p>Built an AI agent that selects the target audience from the CRMs and drafts the campaign messages.</p></div>
+            <div class="block"><h4>How</h4><p>The agent reads the CRM data to pick the audience and writes the message drafts. Outreach runs on Clay and Instantly.</p></div>
+            <div class="stack"><span>CRM data</span><span>Clay</span><span>Instantly</span><span>LLM drafting</span></div>
+            <a class="btn" href="mailto:felix@erkinheimo.info?subject=Email%20campaign%20builder%20agent">Discuss a similar setup</a>
+          </div>
+        </div>
+        <div class="card clickable" tabindex="0" role="button" aria-haspopup="dialog">
+          <span class="tag">Seidat · virtual tour provider</span>
+          <h3>CRM data enrichment agent</h3>
+          <p>Checks whether a prospect already uses virtual tour technology, so sales focuses on the best-fit leads.</p>
+          <span class="more">Why, what &amp; how</span>
+          <div class="detail">
+            <div class="block"><h4>Why</h4><p>Seidat sells virtual tours to hotels. Sales needed to know which prospects already had virtual tour technology before contacting them.</p></div>
+            <div class="block"><h4>What</h4><p>Built an AI agent in Clay with the OpenAI API that checks each prospect for existing virtual tour technology.</p></div>
+            <div class="block"><h4>How</h4><p>It starts from the accounts already in the CRM and searches several web sources for mentions of virtual tour technology. Sales prioritises the accounts with the greatest need.</p></div>
+            <div class="stack"><span>Clay</span><span>OpenAI API</span><span>CRM</span><span>Web research</span></div>
+            <a class="btn" href="mailto:felix@erkinheimo.info?subject=CRM%20data%20enrichment%20agent">Discuss a similar setup</a>
+          </div>
+        </div>
+        <div class="card clickable" tabindex="0" role="button" aria-haspopup="dialog">
+          <span class="tag">Seidat</span>
+          <h3>Sales meeting analyzer</h3>
+          <p>n8n and OpenAI agent that extracts pain points, objections and competitor mentions from meeting transcripts into Google Sheets.</p>
+          <span class="more">Why, what &amp; how</span>
+          <div class="detail">
+            <div class="block"><h4>Why</h4><p>Seidat needed the pain points, objections and competitor mentions from its sales meetings in one place, to develop sales messaging and product and to target marketing.</p></div>
+            <div class="block"><h4>What</h4><p>Built an automation that extracts pain points, objections and competitor mentions from each meeting transcript.</p></div>
+            <div class="block"><h4>How</h4><p>An n8n workflow sends the transcript to the OpenAI API. The analysis is saved to Google Sheets.</p></div>
+            <div class="stack"><span>n8n</span><span>OpenAI API</span><span>Google Sheets</span></div>
+            <a class="btn" href="mailto:felix@erkinheimo.info?subject=Sales%20meeting%20analyzer">Discuss a similar setup</a>
+          </div>
+        </div>
+        <div class="card clickable" tabindex="0" role="button" aria-haspopup="dialog">
+          <span class="tag">FuturesPlatform</span>
+          <h3>HubSpot Breeze agent for LinkedIn</h3>
+          <p>Deployed a HubSpot Breeze agent that sends LinkedIn messages to inbound leads.</p>
+          <span class="more">Why, what &amp; how</span>
+          <div class="detail">
+            <div class="block"><h4>Why</h4><p>FuturesPlatform's inbound leads needed first contact on LinkedIn.</p></div>
+            <div class="block"><h4>What</h4><p>Deployed a HubSpot Breeze agent that sends LinkedIn messages to inbound leads.</p></div>
+            <div class="block"><h4>How</h4><p>The agent runs inside HubSpot, on the lead records already there.</p></div>
+            <div class="stack"><span>HubSpot</span><span>Breeze agent</span><span>LinkedIn</span><span>Lead response</span></div>
+            <a class="btn" href="mailto:felix@erkinheimo.info?subject=HubSpot%20Breeze%20agent%20for%20LinkedIn">Discuss a similar setup</a>
+          </div>
+        </div>
+        <div class="card clickable" tabindex="0" role="button" aria-haspopup="dialog">
+          <span class="tag">High ticket B2B sales team</span>
+          <h3>Outreach portal inside Attio</h3>
+          <p>Custom Attio interface that filters contacts by segment, drafts the message, and lets sales personalize each one.</p>
+          <span class="more">Why, what &amp; how</span>
+          <div class="detail">
+            <div class="block"><h4>Why</h4><p>The team sells high-ticket B2B, and mass email was not an option for its target group: every message has to read as personal. Writing each email one by one was too slow, though. They needed to send more outreach, faster, without losing the personal touch, and in the Attio CRM where the team already works.</p></div>
+            <div class="block"><h4>What</h4><p>Built a custom UI element in Attio that filters people by market segment and writes a message draft for the segment. The salesperson edits and personalizes each outgoing message. Outreach is faster and every message stays personal.</p></div>
+            <div class="block"><h4>How</h4><p>Planned and deployed with Claude Code from the terminal, based on Attio's SDK App documentation.</p></div>
+            <div class="stack"><span>Attio</span><span>Attio SDK App</span><span>Claude Code</span></div>
+            <a class="btn" href="mailto:felix@erkinheimo.info?subject=Outreach%20portal%20inside%20Attio">Discuss a similar setup</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing" class="center">
+    <div class="wrap">
+      <div class="eyebrow">Pricing</div>
+      <h2>3 ways to work together</h2>
+      <div class="prices">
+        <div class="price">
+          <h3>AI and automation projects</h3>
+          <small>From</small><b>€500</b><span>per day</span>
+          <p>Defined-scope delivery of AI agents and automations, from idea to production</p>
+        </div>
+        <div class="price">
+          <h3>Dedicated AI &amp; Agentic Developer</h3>
+          <small>From</small><b>€2000</b><span>per month</span>
+          <p>Continuous co-development, AI agent development, and process ownership</p>
+        </div>
+        <div class="price">
+          <h3>Fractional Head of AI</h3>
+          <small>From</small><b>€4000</b><span>per month</span>
+          <p>Strategic AI vision, architecture oversight, and team leadership.</p>
+        </div>
+      </div>
+      <p class="note">Let's talk about what your business needs.</p>
+    </div>
+  </section>
+
+  <section id="contact" class="alt center">
+    <div class="wrap">
+      <div class="eyebrow">Contact</div>
+      <h2>Let's work together</h2>
+      <a class="btn iconbtn" href="mailto:felix@erkinheimo.info"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>Email me</a>
+      <a class="btn ghost iconbtn" href="https://www.linkedin.com/in/felix-erkinheimo-32774b150" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.75h4v11.25H3V9.75zm7 0h3.83v1.54h.06c.53-1 1.84-2.06 3.78-2.06 4.04 0 4.78 2.66 4.78 6.12V21h-4v-5.1c0-1.22-.02-2.78-1.7-2.78-1.7 0-1.96 1.33-1.96 2.69V21h-4V9.75z"/></svg>Connect on LinkedIn</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  © Felix Erkinheimo · <a href="presentation/">View as presentation</a>
+</footer>
+
+<script>
+  const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+  let openState = null;
+
+  function openCard(card) {
+    if (openState) return;
+    const r = card.getBoundingClientRect();
+    const backdrop = document.createElement('div');
+    backdrop.className = 'backdrop';
+    const el = document.createElement('div');
+    el.className = 'expanded';
+    el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true');
+    el.innerHTML = '<button class="close" aria-label="Close">&times;</button>' +
+      '<span class="tag">' + card.querySelector('.tag').innerHTML + '</span>' +
+      '<h3>' + card.querySelector('h3').innerHTML + '</h3>' + card.querySelector('.detail').innerHTML;
+    const start = () => { el.style.left = r.left + 'px'; el.style.top = r.top + 'px'; el.style.width = r.width + 'px'; el.style.maxHeight = r.height + 'px'; el.style.opacity = '0.4'; };
+    start();
+    document.body.append(backdrop, el);
+    document.documentElement.style.overflow = 'hidden';
+
+    // measure the final geometry without animating
+    el.style.transition = 'none'; el.style.maxHeight = 'none'; el.style.opacity = '1';
+    const w = Math.min(640, innerWidth - 32);
+    el.style.width = w + 'px';
+    const h = el.offsetHeight;
+    const maxH = innerHeight - 32;
+    const final = {
+      left: clamp(r.left + r.width / 2 - w / 2, 16, innerWidth - w - 16),
+      top: clamp(r.top, 16, Math.max(16, innerHeight - Math.min(h, maxH) - 16)),
+      width: w, maxHeight: maxH
+    };
+    start(); void el.offsetHeight; el.style.transition = '';
+    card.style.visibility = 'hidden';
+    setTimeout(() => {
+      backdrop.classList.add('on');
+      el.style.left = final.left + 'px'; el.style.top = final.top + 'px';
+      el.style.width = final.width + 'px'; el.style.maxHeight = final.maxHeight + 'px'; el.style.opacity = '1';
+    }, 30);
+
+    const close = () => {
+      if (!openState) return;
+      const rr = card.getBoundingClientRect();
+      backdrop.classList.remove('on');
+      el.style.left = rr.left + 'px'; el.style.top = rr.top + 'px'; el.style.width = rr.width + 'px'; el.style.opacity = '0';
+      setTimeout(() => {
+        el.remove(); backdrop.remove(); card.style.visibility = '';
+        document.documentElement.style.overflow = ''; card.focus({ preventScroll: true });
+      }, 330);
+      document.removeEventListener('keydown', onKey);
+      openState = null;
+    };
+    const onKey = e => { if (e.key === 'Escape') close(); };
+    document.addEventListener('keydown', onKey);
+    backdrop.onclick = close;
+    el.querySelector('.close').onclick = close;
+    el.querySelector('.close').focus({ preventScroll: true });
+    openState = { close };
+  }
+
+  document.querySelectorAll('.card.clickable').forEach(c => {
+    c.addEventListener('click', () => openCard(c));
+    c.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openCard(c); } });
+  });
+</script>
+</body>
+</html>

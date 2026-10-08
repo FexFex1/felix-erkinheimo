@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="fi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Salasanasuojattu ehdotus</title>
+<style>
+  :root { --navy: #022E4C; --steel: #517493; --wine: #56061D; --cream: #E2D9CB; --bg: #EFEAE2; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; overflow: hidden; }
+  body { font-family: "Segoe UI", system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--navy); }
+
+  /* decorative stand-in for the offer: shapes only, no real content, heavily blurred */
+  .clip { position: fixed; inset: 0; overflow: hidden; }
+  .bg { position: absolute; inset: -60px; filter: blur(22px); opacity: .85; pointer-events: none; }
+  .bg i { position: absolute; display: block; border-radius: 14px; background: var(--navy); }
+  .bg .l { height: 26px; background: var(--steel); opacity: .75; }
+  .bg .c { border-radius: 50%; }
+  .bg .t1 { left: 8%; top: 12%; width: 52%; height: 70px; }
+  .bg .t2 { left: 8%; top: 21%; width: 38%; height: 70px; }
+  .bg .l1 { left: 8%; top: 32%; width: 22%; }
+  .bg .c1 { left: 10%; top: 42%; width: 170px; height: 170px; background: var(--steel); }
+  .bg .c2 { left: 30%; top: 50%; width: 120px; height: 120px; background: #1e2fff; }
+  .bg .c3 { left: 42%; top: 40%; width: 36px; height: 36px; background: var(--wine); }
+  .bg .l2 { left: 58%; top: 18%; width: 30%; height: 56px; background: var(--wine); opacity: .9; }
+  .bg .l3 { left: 58%; top: 28%; width: 34%; }
+  .bg .l4 { left: 58%; top: 33%; width: 28%; }
+  .bg .l5 { left: 58%; top: 38%; width: 31%; }
+  .bg .l6 { left: 12%; top: 72%; width: 40%; height: 44px; }
+  .bg .l7 { left: 12%; top: 79%; width: 33%; }
+  .bg .l8 { left: 12%; top: 84%; width: 36%; }
+  .bg .c4 { left: 66%; top: 62%; width: 90px; height: 90px; background: var(--steel); }
+  .bg .c5 { left: 78%; top: 70%; width: 70px; height: 70px; background: var(--wine); }
+
+  .veil { position: fixed; inset: 0; display: grid; place-items: center; padding: 20px; background: rgba(239,234,226,.35); }
+  .card { width: min(420px, 100%); background: var(--bg); border-top: 6px solid var(--wine); border-radius: 10px; padding: 34px 32px 30px; box-shadow: 0 24px 60px rgba(2,46,76,.28); }
+  .eyebrow { display: flex; align-items: center; gap: 12px; font-size: .75rem; letter-spacing: .18em; text-transform: uppercase; font-weight: 600; color: var(--steel); margin-bottom: 14px; }
+  .eyebrow::before { content: ""; width: 34px; height: 4px; background: var(--wine); }
+  h1 { font-size: 1.7rem; line-height: 1.15; letter-spacing: -.02em; margin-bottom: 8px; }
+  p { color: var(--steel); line-height: 1.45; margin-bottom: 22px; }
+  form { display: flex; flex-direction: column; gap: 12px; }
+  input { font: inherit; font-size: 1.05rem; padding: 14px 16px; border-radius: 8px; border: 2px solid var(--steel); background: #fff; color: var(--navy); outline: none; }
+  input:focus { border-color: var(--wine); }
+  button { font: inherit; font-weight: 600; font-size: 1.05rem; padding: 14px 16px; border-radius: 99px; border: 0; background: var(--wine); color: var(--cream); cursor: pointer; transition: .2s; }
+  button:hover { background: var(--navy); }
+  button:disabled { opacity: .6; cursor: progress; }
+  .err { min-height: 1.3em; color: var(--wine); font-weight: 600; font-size: .95rem; }
+  .shake { animation: shake .35s; }
+  @keyframes shake { 20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
+</style>
+</head>
+<body>
+
+<div class="clip" aria-hidden="true"><div class="bg">
+  <i class="t1"></i><i class="t2"></i><i class="l l1"></i>
+  <i class="c c1"></i><i class="c c2"></i><i class="c c3"></i>
+  <i class="l2"></i><i class="l l3"></i><i class="l l4"></i><i class="l l5"></i>
+  <i class="l l6"></i><i class="l l7"></i><i class="l l8"></i>
+  <i class="c c4"></i><i class="c c5"></i>
+</div></div>
+
+<div class="veil">
+  <div class="card" id="card">
+    <div class="eyebrow">Salasanasuojattu</div>
+    <h1>Yhteistyöehdotus</h1>
+    <p>Syötä ehdotuksen mukana saamasi salasana.</p>
+    <form id="f" autocomplete="off">
+      <input id="pw" type="password" placeholder="Salasana" autocomplete="current-password" autofocus required>
+      <button id="go" type="submit">Avaa ehdotus</button>
+      <div class="err" id="err" role="alert"></div>
+    </form>
+  </div>
+</div>
+
+<script>
+(() => {   // closed scope: nothing global is left behind when the offer replaces this page
+  const ITER = 600000;                       // PBKDF2 rounds: makes each password guess slow
+  const enc = new TextEncoder(), dec = new TextDecoder();
+  const $ = id => document.getElementById(id);
+  let payload;                               // the encrypted offer, fetched once
+
+  async function deriveKey(pw, salt) {
+    const base = await crypto.subtle.importKey('raw', enc.encode(pw), 'PBKDF2', false, ['deriveKey']);
+    return crypto.subtle.deriveKey({ name: 'PBKDF2', salt, iterations: ITER, hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+  }
+
+  // the encrypted video is fetched after unlocking, with progress, and decrypted in the browser
+  function makeVideoLoader(key) {
+    let promise;
+    return onProgress => promise || (promise = (async () => {
+      const res = await fetch('video.enc');
+      if (!res.ok) throw new Error('video');
+      const total = +res.headers.get('Content-Length') || 0;
+      const reader = res.body.getReader(); const parts = []; let got = 0;
+      for (;;) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        parts.push(value); got += value.length;
+        if (onProgress && total) onProgress(Math.min(0.95, got / total));
+      }
+      const all = new Uint8Array(got); let o = 0; for (const p of parts) { all.set(p, o); o += p.length; }
+      const plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: all.slice(0, 12) }, key, all.slice(12));
+      if (onProgress) onProgress(1);
+      return URL.createObjectURL(new Blob([plain], { type: 'video/mp4' }));
+    })());
+  }
+
+  async function unlock(pw) {
+    if (!payload) {
+      const res = await fetch('payload.bin');
+      if (!res.ok) throw new Error('network');
+      payload = new Uint8Array(await res.arrayBuffer());
+    }
+    const key = await deriveKey(pw, payload.slice(0, 16));
+    let plain;
+    try { plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: payload.slice(16, 28) }, key, payload.slice(28)); }
+    catch (e) { throw new Error('password'); }
+    try { sessionStorage.setItem('ac-pw', pw); } catch (e) {}
+    window.OFFER_VIDEO = makeVideoLoader(key);
+    const html = dec.decode(plain);
+    document.open(); document.write(html); document.close();   // the offer replaces this page
+  }
+
+  async function attempt(pw, silent) {
+    $('go').disabled = true; $('err').textContent = ''; $('go').textContent = 'Avataan…';
+    try { await unlock(pw); }
+    catch (e) {
+      $('go').disabled = false; $('go').textContent = 'Avaa ehdotus';
+      try { sessionStorage.removeItem('ac-pw'); } catch (x) {}
+      if (!silent) {
+        $('err').textContent = e.message === 'password' ? 'Väärä salasana.' : 'Yhteysvirhe. Yritä uudelleen.';
+        $('card').classList.remove('shake'); void $('card').offsetWidth; $('card').classList.add('shake');
+        $('pw').select();
+      }
+    }
+  }
+
+  $('f').addEventListener('submit', e => { e.preventDefault(); attempt($('pw').value, false); });
+  let saved = null; try { saved = sessionStorage.getItem('ac-pw'); } catch (e) {}
+  if (saved) attempt(saved, true);           // same tab, e.g. after a refresh: no need to type it again
+})();
+</script>
+</body>
+</html>
