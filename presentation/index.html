@@ -165,21 +165,8 @@
     <h2>AI agents I've built</h2>
     <div class="cards">
         <div class="card clickable" tabindex="0" role="button" aria-haspopup="dialog">
-          <span class="tag">Videopalat</span>
-          <h3>Email campaign builder agent</h3>
-          <p class="fade">Videopalat wanted to test email as a sales channel for its short-video service. Each campaign needed a target audience and message copy built by hand. Built an AI agent that selects the target audience from the CRMs and drafts the campaign messages. The agent reads the CRM data to pick the audience and writes the message drafts, and outreach runs on Clay and Instantly.</p>
-          <span class="more">Show more</span>
-          <div class="detail">
-            <div class="block"><h4>Background</h4><p>Videopalat wanted to test email as a sales channel for its short-video service. Each campaign needed a target audience and message copy built by hand.</p></div>
-            <div class="block"><h4>What</h4><p>Built an AI agent that selects the target audience from the CRMs and drafts the campaign messages. The agent reads the CRM data to pick the audience and writes the message drafts, and outreach runs on Clay and Instantly.</p></div>
-            <div class="block"><h4>Result</h4><p>The outreach project produced 11 positive conversation openings and a new customer acquisition channel for Videopalat.</p></div>
-            <div class="stack"><span>CRM data</span><span>Clay</span><span>Instantly</span><span>LLM drafting</span></div>
-            <a class="btn" href="mailto:felix@erkinheimo.info?subject=Email%20campaign%20builder%20agent">Discuss a similar setup</a>
-          </div>
-        </div>
-        <div class="card clickable" tabindex="0" role="button" aria-haspopup="dialog">
           <span class="tag">Seidat</span>
-          <h3>Company database and market signals</h3>
+          <h3>Sales database and market signals</h3>
           <p class="fade">Seidat set out to find international growth in the hotel industry. Virtual tours are part of Seidat's offering to hotels. First a company database was needed for sales. Then information was needed on whether a company already has a virtual tour, in order to personalize the sales outreach. Using Clay and the OpenAI API, an AI agent was built that finds all potential customers in each target country and checks for each one whether information about an existing virtual tour can be found online. This was done by searching the company's website for keywords, such as the names of virtual tour providers.</p>
           <span class="more">Show more</span>
           <div class="detail">
@@ -187,20 +174,20 @@
             <div class="block"><h4>What</h4><p>Using Clay and the OpenAI API, an AI agent was built that finds all potential customers in each target country and checks for each one whether information about an existing virtual tour can be found online. This was done by searching the company's website for keywords, such as the names of virtual tour providers.</p></div>
             <div class="block"><h4>Result</h4><p>The company database grew by 6000+ companies. Sales can focus resources on the companies with the greatest need for the solution, and personalize sales messaging accordingly.</p></div>
             <div class="stack"><span>Clay</span><span>OpenAI API</span><span>Web research</span></div>
-            <a class="btn" href="mailto:felix@erkinheimo.info?subject=Company%20database%20and%20market%20signals">Discuss a similar setup</a>
+            <a class="btn" href="mailto:felix@erkinheimo.info?subject=Sales%20database%20and%20market%20signals">Discuss a similar setup</a>
           </div>
         </div>
         <div class="card clickable" tabindex="0" role="button" aria-haspopup="dialog">
-          <span class="tag">Seidat</span>
-          <h3>Sales meeting analyzer</h3>
-          <p class="fade">Seidat needed the pain points, objections and competitor mentions from its sales meetings in one place, to develop sales messaging and product and to target marketing. Built an n8n automation that sends each meeting transcript to the OpenAI API, which extracts the pain points, objections and competitor mentions. The analysis is saved to Google Sheets.</p>
+          <span class="tag">High-ticket B2B sales team</span>
+          <h3>Sales outreach portal</h3>
+          <p class="fade">The team sells high-ticket B2B solutions. The market is small, and mass email and automated messaging do not suit the target group. At the same time, sending emails manually is too slow. I built a custom UI element into the Attio CRM for sending sales messages. It filters people by market segment and writes a personalized message draft for the segment. The salesperson edits and reviews every message before sending.</p>
           <span class="more">Show more</span>
           <div class="detail">
-            <div class="block"><h4>Background</h4><p>Seidat needed the pain points, objections and competitor mentions from its sales meetings in one place, to develop sales messaging and product and to target marketing.</p></div>
-            <div class="block"><h4>What</h4><p>Built an n8n automation that sends each meeting transcript to the OpenAI API, which extracts the pain points, objections and competitor mentions. The analysis is saved to Google Sheets.</p></div>
-            <div class="block"><h4>Result</h4><p>The tool helps Seidat develop its sales messaging and product, and target marketing at customers' real needs.</p></div>
-            <div class="stack"><span>n8n</span><span>OpenAI API</span><span>Google Sheets</span></div>
-            <a class="btn" href="mailto:felix@erkinheimo.info?subject=Sales%20meeting%20analyzer">Discuss a similar setup</a>
+            <div class="block"><h4>Background</h4><p>The team sells high-ticket B2B solutions. The market is small, and mass email and automated messaging do not suit the target group. At the same time, sending emails manually is too slow.</p></div>
+            <div class="block"><h4>What</h4><p>I built a custom UI element into the Attio CRM for sending sales messages. It filters people by market segment and writes a personalized message draft for the segment. The salesperson edits and reviews every message before sending.</p></div>
+            <div class="block"><h4>Result</h4><p>This ensures that all sales follow-up messages go out on time and are of high quality. That is critical for the company, because there are fewer sales cases and the average deal size is high.</p></div>
+            <div class="stack"><span>Attio</span><span>Attio SDK App</span><span>Claude Code</span></div>
+            <a class="btn" href="mailto:felix@erkinheimo.info?subject=Sales%20outreach%20portal">Discuss a similar setup</a>
           </div>
         </div>
         <div class="card clickable" tabindex="0" role="button" aria-haspopup="dialog">
@@ -217,16 +204,29 @@
           </div>
         </div>
         <div class="card clickable" tabindex="0" role="button" aria-haspopup="dialog">
-          <span class="tag">High-ticket B2B sales team</span>
-          <h3>Sales outreach portal</h3>
-          <p class="fade">The team sells high-ticket B2B solutions. The market is small, and mass email and automated messaging do not suit the target group. At the same time, sending emails manually is too slow. I built a custom UI element into the Attio CRM for sending sales messages. It filters people by market segment and writes a personalized message draft for the segment. The salesperson edits and reviews every message before sending.</p>
+          <span class="tag">Seidat</span>
+          <h3>Sales meeting analyzer</h3>
+          <p class="fade">Seidat needed the pain points, objections and competitor mentions from its sales meetings in one place, to develop sales messaging and product and to target marketing. Built an n8n automation that sends each meeting transcript to the OpenAI API, which extracts the pain points, objections and competitor mentions. The analysis is saved to Google Sheets.</p>
           <span class="more">Show more</span>
           <div class="detail">
-            <div class="block"><h4>Background</h4><p>The team sells high-ticket B2B solutions. The market is small, and mass email and automated messaging do not suit the target group. At the same time, sending emails manually is too slow.</p></div>
-            <div class="block"><h4>What</h4><p>I built a custom UI element into the Attio CRM for sending sales messages. It filters people by market segment and writes a personalized message draft for the segment. The salesperson edits and reviews every message before sending.</p></div>
-            <div class="block"><h4>Result</h4><p>This ensures that all sales follow-up messages go out on time and are of high quality. That is critical for the company, because there are fewer sales cases and the average deal size is €100,000+.</p></div>
-            <div class="stack"><span>Attio</span><span>Attio SDK App</span><span>Claude Code</span></div>
-            <a class="btn" href="mailto:felix@erkinheimo.info?subject=Sales%20outreach%20portal">Discuss a similar setup</a>
+            <div class="block"><h4>Background</h4><p>Seidat needed the pain points, objections and competitor mentions from its sales meetings in one place, to develop sales messaging and product and to target marketing.</p></div>
+            <div class="block"><h4>What</h4><p>Built an n8n automation that sends each meeting transcript to the OpenAI API, which extracts the pain points, objections and competitor mentions. The analysis is saved to Google Sheets.</p></div>
+            <div class="block"><h4>Result</h4><p>The tool helps Seidat develop its sales messaging and product, and target marketing at customers' real needs.</p></div>
+            <div class="stack"><span>n8n</span><span>OpenAI API</span><span>Google Sheets</span></div>
+            <a class="btn" href="mailto:felix@erkinheimo.info?subject=Sales%20meeting%20analyzer">Discuss a similar setup</a>
+          </div>
+        </div>
+        <div class="card clickable" tabindex="0" role="button" aria-haspopup="dialog">
+          <span class="tag">Videopalat</span>
+          <h3>Email campaign builder agent</h3>
+          <p class="fade">Videopalat wanted to test email as a sales channel for its short-video service. Each campaign needed a target audience and message copy built by hand. Built an AI agent that selects the target audience from the CRMs and drafts the campaign messages. The agent reads the CRM data to pick the audience and writes the message drafts, and outreach runs on Clay and Instantly.</p>
+          <span class="more">Show more</span>
+          <div class="detail">
+            <div class="block"><h4>Background</h4><p>Videopalat wanted to test email as a sales channel for its short-video service. Each campaign needed a target audience and message copy built by hand.</p></div>
+            <div class="block"><h4>What</h4><p>Built an AI agent that selects the target audience from the CRMs and drafts the campaign messages. The agent reads the CRM data to pick the audience and writes the message drafts, and outreach runs on Clay and Instantly.</p></div>
+            <div class="block"><h4>Result</h4><p>The outreach project produced 11 positive conversation openings and a new customer acquisition channel for Videopalat.</p></div>
+            <div class="stack"><span>CRM data</span><span>Clay</span><span>Instantly</span><span>LLM drafting</span></div>
+            <a class="btn" href="mailto:felix@erkinheimo.info?subject=Email%20campaign%20builder%20agent">Discuss a similar setup</a>
           </div>
         </div>
     </div>
