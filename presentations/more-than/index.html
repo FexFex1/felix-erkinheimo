@@ -1,0 +1,842 @@
+<!doctype html>
+<html lang="fi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="robots" content="noindex, nofollow">
+<title>More Than – esitys – Felix Erkinheimo</title>
+<script>window.OFFER_NO_VIDEO = true;</script>
+<style>
+  :root {
+    --brand-navy: #022E4C;
+    --brand-steel: #517493;
+    --brand-wine: #56061D;
+    --brand-cream: #E2D9CB;
+    --bg: #EFEAE2;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; overflow: hidden; }
+  body { font-family: "Segoe UI", system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--brand-navy); }
+
+  /* The whole proposal lives on one big canvas; the "camera" moves over it. The stage clips it so phones never zoom out to fit it. */
+  .stage { position: fixed; inset: 0; overflow: hidden; }
+  .world { position: absolute; left: 0; top: 0; width: 2900px; height: 6400px; transform-origin: 0 0; will-change: transform; }
+  .world.animate { transition: transform 1.2s cubic-bezier(.65, 0, .35, 1); }
+  .trail { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  .trail path { fill: none; stroke: var(--brand-steel); stroke-width: 12; stroke-dasharray: 1 30; stroke-linecap: round; opacity: .9; }
+
+  /* Sections are just content on the open canvas: no boxes, cards or backgrounds */
+  .panel { position: absolute; transition: opacity .8s ease; cursor: pointer; }
+  .panel .no { display: flex; align-items: center; gap: 24px; font-size: 30px; letter-spacing: .2em; text-transform: uppercase; font-weight: 600; color: var(--brand-steel); margin-bottom: 26px; }
+  .panel .no::before { content: ""; width: 80px; height: 6px; background: var(--brand-wine); }
+  .panel h2 { font-size: 104px; line-height: 1.02; letter-spacing: -.03em; font-weight: 700; }
+  .panel h2.long { font-size: 84px; }
+  .panel .sub { margin-top: 28px; font-size: 40px; color: var(--brand-steel); }
+  .panel .body { margin-top: 40px; font-size: 36px; line-height: 1.5; max-width: 30em; }
+  .panel .body p + p { margin-top: 26px; }
+  .panel.price h2 { color: var(--brand-wine); }
+  .lead { font-size: 52px; line-height: 1.25; font-weight: 600; max-width: 18em; margin-top: 40px; }
+
+  .world.focus .panel { opacity: .2; }
+  .world.focus .panel.active { opacity: 1; }
+
+  /* intro images, scattered under the text */
+  .scatter { position: relative; height: 440px; margin-top: 30px; }
+  .scatter .pic { position: absolute; border-radius: 50%; object-fit: cover; box-shadow: 0 18px 40px rgba(2,46,76,.18); }
+  .scatter .felix { width: 290px; height: 290px; left: 20px; top: 40px; object-position: 50% 30%; border: 8px solid var(--bg); }
+  .scatter .club { width: 210px; height: 210px; left: 360px; top: 150px; border: 8px solid var(--bg); }
+  .scatter .ring { position: absolute; border-radius: 50%; border: 6px solid var(--brand-steel); width: 90px; height: 90px; left: 400px; top: 10px; opacity: .7; }
+  .scatter .dot { position: absolute; border-radius: 50%; background: var(--brand-wine); width: 36px; height: 36px; left: 640px; top: 250px; }
+  .scatter .dot.s { background: var(--brand-steel); width: 20px; height: 20px; left: 330px; top: 20px; }
+
+  /* lists */
+  .list { list-style: none; margin-top: 40px; }
+  .list li { position: relative; padding: 20px 0 20px 56px; border-top: 1px solid rgba(2,46,76,.18); font-size: 36px; line-height: 1.4; }
+  .list li::before { content: ""; position: absolute; left: 0; top: 40px; width: 32px; height: 6px; background: var(--brand-wine); }
+  .list li b { display: block; font-weight: 700; }
+  .list li span { color: var(--brand-steel); font-size: 32px; }
+
+  /* pricing */
+  .plan.one { margin-top: 60px; max-width: 560px; }
+  .plans { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; margin-top: 50px; }
+  .plan { border-top: 6px solid var(--brand-wine); padding-top: 30px; }
+  .plan small { display: block; font-size: 28px; letter-spacing: .18em; text-transform: uppercase; font-weight: 600; color: var(--brand-steel); }
+  .plan .amount { font-size: 96px; font-weight: 700; line-height: 1.1; margin: 10px 0 24px; color: var(--brand-wine); letter-spacing: -.02em; }
+  .plan .amount span { font-size: 44px; color: var(--brand-steel); letter-spacing: 0; margin-left: 10px; }
+  .plan p { font-size: 34px; line-height: 1.45; }
+  .plan ul { list-style: none; margin: 16px 0; }
+  .plan ul li { position: relative; padding: 8px 0 8px 40px; font-size: 34px; line-height: 1.4; }
+  .plan ul li::before { content: ""; position: absolute; left: 0; top: 26px; width: 22px; height: 5px; background: var(--brand-steel); }
+
+  /* three case columns */
+  .cases { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); gap: 60px; margin-top: 50px; min-height: 860px; }
+  .case { border-top: 6px solid var(--brand-wine); padding-top: 28px; display: flex; flex-direction: column; }
+  .case .tag { font-size: 24px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; color: var(--brand-steel); margin-bottom: 14px; }
+  .case h3 { font-size: 46px; line-height: 1.1; letter-spacing: -.02em; margin-bottom: 26px; }
+  .case .fade { position: relative; max-height: 340px; overflow: hidden; font-size: 30px; line-height: 1.5;
+    -webkit-mask-image: linear-gradient(#000 55%, transparent); mask-image: linear-gradient(#000 55%, transparent); }
+  .case .fade p + p { margin-top: 20px; }
+  .more { align-self: flex-start; margin-top: 24px; background: none; border: 3px solid var(--brand-steel); color: var(--brand-navy); font: inherit; font-size: 28px; font-weight: 600; padding: 12px 34px; border-radius: 99px; cursor: pointer; transition: .2s; }
+  .more:hover { background: var(--brand-wine); border-color: var(--brand-wine); color: var(--brand-cream); }
+  .casefull { position: absolute; left: -30px; right: -30px; top: -30px; bottom: -30px; padding: 34px 30px 30px; background: var(--bg);
+    border-top: 6px solid var(--brand-wine); opacity: 0; pointer-events: none; transform: translateY(24px); transition: opacity .45s ease, transform .45s ease; z-index: 3; }
+  .casefull.on { opacity: 1; pointer-events: auto; transform: none; }
+  .casefull h3 { font-size: 64px; margin-bottom: 36px; }
+  .casefull .cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 50px; }
+  .casefull h4 { font-size: 24px; letter-spacing: .18em; text-transform: uppercase; color: var(--brand-wine); margin-bottom: 12px; }
+  .casefull p { font-size: 30px; line-height: 1.5; }
+  .casefull .chips { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 40px; }
+  .casefull .chips span { font-size: 24px; font-weight: 600; color: var(--brand-steel); border: 2px solid var(--brand-steel); border-radius: 99px; padding: 6px 24px; }
+  .casefull .close { position: absolute; top: 28px; right: 30px; background: none; border: 0; font: inherit; font-size: 30px; font-weight: 600; color: var(--brand-steel); cursor: pointer; }
+  .casefull .close:hover { color: var(--brand-wine); }
+
+
+  .intro-line { margin-top: 36px; font-size: 40px; font-weight: 600; color: var(--brand-steel); }
+
+  /* fractional GTM lead */
+  .bul { list-style: none; margin-top: 40px; }
+  .bul li { position: relative; padding: 14px 0 14px 56px; font-size: 36px; line-height: 1.4; }
+  .bul li::before { content: ""; position: absolute; left: 0; top: 36px; width: 32px; height: 6px; background: var(--brand-wine); }
+  .who { margin-top: 50px; padding-top: 30px; border-top: 1px solid rgba(2,46,76,.18); }
+  .who .tag { font-size: 26px; letter-spacing: .16em; text-transform: uppercase; font-weight: 600; color: var(--brand-steel); margin-bottom: 12px; }
+  .who p { font-size: 38px; line-height: 1.35; }
+  .who .more { margin-top: 26px; }
+  #casebio { padding-top: 40px; }
+  #casebio .tag { font-size: 26px; letter-spacing: .16em; text-transform: uppercase; font-weight: 600; color: var(--brand-steel); margin-bottom: 14px; }
+  .bio-grid { display: grid; grid-template-columns: 1fr 300px; gap: 50px; align-items: start; }
+  .bio-grid .list { margin-top: 0; }
+  .bio-grid .list li { font-size: 32px; }
+  .bio-grid .list li span { font-size: 28px; }
+  .bio-grid .pic { width: 280px; height: 280px; border-radius: 50%; object-fit: cover; object-position: 50% 30%; border: 8px solid var(--bg); box-shadow: 0 18px 40px rgba(2,46,76,.18); }
+
+  /* what's included: the items side by side, small logos under the techstack */
+  .stack { margin-top: 70px; border-top: 6px solid var(--brand-steel); padding-top: 40px; }
+  .stack h3 { font-size: 52px; letter-spacing: -.02em; margin-bottom: 30px; }
+  .incl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
+  .inc { border-top: 1px solid rgba(2,46,76,.18); padding-top: 26px; }
+  .inc b { display: block; font-size: 38px; margin-bottom: 8px; }
+  .inc > span { display: block; font-size: 30px; color: var(--brand-steel); line-height: 1.4; }
+  .tool-scatter { position: relative; height: 240px; margin-top: 24px; }
+  .tool-scatter .tool { position: absolute; text-align: center; font-size: 20px; font-weight: 600; }
+  .tool-scatter .tool img { display: block; width: var(--s); height: var(--s); border-radius: 50%; object-fit: cover; border: 4px solid var(--bg); box-shadow: 0 10px 22px rgba(2,46,76,.18); margin: 0; }
+  .tool-scatter .ring { position: absolute; border-radius: 50%; border: 5px solid var(--brand-steel); width: 50px; height: 50px; opacity: .7; }
+  .tool-scatter .dot { position: absolute; border-radius: 50%; background: var(--brand-wine); width: 26px; height: 26px; }
+  .tool-scatter .dot.s { background: var(--brand-steel); width: 16px; height: 16px; }
+
+  /* video presentation */
+  .scatter .felix { overflow: hidden; cursor: default; }
+  .scatter .felix img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; border-radius: 50%; }
+  .scatter .felix.has-video { cursor: pointer; }
+  .scatter .felix .play { display: none; position: absolute; left: 50%; top: 50%; width: 88px; height: 88px; margin: -44px 0 0 -44px; border-radius: 50%; background: rgba(86,6,29,.92); box-shadow: 0 8px 24px rgba(2,46,76,.35); transition: transform .25s; }
+  .scatter .felix .play::after { content: ""; position: absolute; left: 50%; top: 50%; margin: -17px 0 0 -10px; border-style: solid; border-width: 17px 0 17px 30px; border-color: transparent transparent transparent var(--brand-cream); }
+  .scatter .felix.has-video .play { display: block; }
+  .scatter .felix.has-video:hover .play { transform: scale(1.1); }
+  .tour-btn { position: absolute; left: 20px; top: 352px; margin: 0; display: none; align-items: center; gap: 14px; }
+  .tour-btn.on { display: inline-flex; }
+  .tour-btn:disabled { opacity: .6; cursor: progress; }
+  .tour-btn svg { width: 22px; height: 22px; fill: currentColor; }
+
+  .bubble { position: fixed; z-index: 30; left: 24px; top: 24px; width: 200px; height: 200px; opacity: 0; pointer-events: none;
+    transition: left .8s cubic-bezier(.65,0,.35,1), top .8s cubic-bezier(.65,0,.35,1), width .8s cubic-bezier(.65,0,.35,1), height .8s cubic-bezier(.65,0,.35,1), opacity .4s ease; }
+  .bubble.on { opacity: 1; pointer-events: auto; }
+  .bubble video { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 5px solid var(--bg); box-shadow: 0 14px 34px rgba(2,46,76,.35); background: var(--brand-navy); }
+  .bubble .prog { position: absolute; inset: -9px; width: calc(100% + 18px); height: calc(100% + 18px); transform: rotate(-90deg); pointer-events: none; }
+  .bubble .prog circle { fill: none; stroke-width: 3.2; }
+  .bubble .prog .tr { stroke: rgba(81,116,147,.35); }
+  .bubble .prog .br { stroke: var(--brand-wine); stroke-linecap: round; stroke-dasharray: 289.03; stroke-dashoffset: 289.03; }
+  .bubble .ctl { position: absolute; left: 6px; bottom: calc(100% + 18px); display: flex; gap: 8px; }
+  .bubble .ctl button { width: 38px; height: 38px; padding: 0; border-radius: 50%; border: 2px solid var(--brand-steel); background: var(--bg); color: var(--brand-steel); cursor: pointer; display: grid; place-items: center; transition: .2s; }
+  .bubble .ctl button:hover { background: var(--brand-wine); border-color: var(--brand-wine); color: var(--brand-cream); }
+  .bubble .ctl svg { width: 17px; height: 17px; fill: currentColor; stroke: currentColor; stroke-width: 0; }
+  .bubble .ctl svg .s { fill: none; stroke-width: 2; stroke-linecap: round; }
+  .bubble .resume { position: absolute; left: calc(100% + 18px); bottom: 14px; display: none; white-space: nowrap; background: var(--brand-wine); color: var(--brand-cream); border: 0; font: inherit; font-weight: 600; padding: 12px 22px; border-radius: 99px; cursor: pointer; box-shadow: 0 8px 22px rgba(2,46,76,.3); }
+  .bubble.interrupted .resume { display: block; }
+
+  .rec { position: fixed; z-index: 40; top: 14px; right: 60px; width: 320px; padding: 14px 16px; background: var(--bg); border: 2px solid var(--brand-wine); border-radius: 10px; font-size: 13px; box-shadow: 0 10px 30px rgba(2,46,76,.25); }
+  .rec p { margin: 8px 0; color: var(--brand-steel); line-height: 1.4; }
+  .rec textarea { width: 100%; font: 12px/1.3 ui-monospace, Consolas, monospace; border: 1px solid var(--brand-steel); border-radius: 6px; padding: 6px; background: #fff; }
+  .rec button { margin: 6px 6px 0 0; padding: 6px 14px; border-radius: 99px; border: 2px solid var(--brand-steel); background: none; color: var(--brand-navy); font: inherit; font-weight: 600; cursor: pointer; }
+  .rec button:hover { background: var(--brand-wine); border-color: var(--brand-wine); color: var(--brand-cream); }
+
+  /* mobile: the sections are re-laid out as one narrow vertical trail so the text stays readable when zoomed to fit */
+  body { touch-action: none; overscroll-behavior: none; }
+  .world.m .panel h2 { font-size: 92px; }
+  .world.m .panel h2.long { font-size: 76px; }
+  .world.m .panel .body, .world.m .lead { max-width: none; }
+  .world.m .plans, .world.m .incl-grid { grid-template-columns: 1fr; gap: 50px; }
+  .world.m .cases { grid-template-columns: 1fr; gap: 70px; min-height: 0; }
+  .world.m .case .tag, .world.m .casefull h4, .world.m .plan small { font-size: 30px; }
+  .world.m .casefull { position: static; display: none; padding: 0; border-top: 0; opacity: 1; transform: none; transition: none; }
+  .world.m .casefull.on { display: block; }
+  .world.m .casefull h3 { font-size: 56px; margin-bottom: 26px; padding-right: 0; }
+  .world.m .casefull .cols, .world.m .bio-grid { grid-template-columns: 1fr; gap: 36px; }
+  .world.m .casefull .close { position: static; display: block; margin: 0 0 18px auto; font-size: 34px; }
+  .world.m .case.open > .tag, .world.m .case.open > h3, .world.m .case.open > .fade, .world.m .case.open > .more { display: none; }
+  .world.m .panel.open > .bul, .world.m .panel.open > .who { display: none; }
+  .world.m .bio-grid .pic { justify-self: center; }
+
+  /* new slides */
+  .panel h2 .hl { color: var(--brand-wine); }
+  .facts { margin-top: 40px; }
+  .fact { display: grid; grid-template-columns: 330px 1fr; gap: 50px; align-items: center; padding: 28px 0; border-top: 1px solid rgba(2,46,76,.18); }
+  .fact small { display: block; font-size: 28px; letter-spacing: .18em; text-transform: uppercase; font-weight: 600; color: var(--brand-steel); margin-bottom: 6px; }
+  .fact b { display: block; font-size: 120px; line-height: .95; font-weight: 700; color: var(--brand-wine); letter-spacing: -.03em; }
+  .fact p { font-size: 36px; line-height: 1.4; }
+  .analogy { margin-top: 36px; padding: 6px 0 6px 34px; border-left: 6px solid var(--brand-wine); font-size: 38px; line-height: 1.4; font-weight: 600; color: var(--brand-steel); }
+  .pyramid svg { display: block; width: 100%; height: auto; margin-top: 40px; }
+  .tl { list-style: none; display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 70px; }
+  .tl li { position: relative; padding: 70px 36px 0 0; font-size: 34px; line-height: 1.3; font-weight: 600; }
+  .tl li::before { content: ""; position: absolute; left: 0; top: 0; width: 36px; height: 36px; box-sizing: border-box; border-radius: 50%; border: 6px solid var(--brand-steel); background: var(--bg); z-index: 2; }
+  .tl li.done::before { background: var(--brand-wine); border-color: var(--brand-wine); }
+  .tl li::after { content: ""; position: absolute; left: 36px; top: 15px; width: calc(100% - 36px); height: 6px; background: repeating-linear-gradient(90deg, rgba(81,116,147,.5) 0 14px, transparent 14px 28px); }
+  .tl li.solid::after { background: var(--brand-wine); }
+  .tl li:last-child::after { display: none; }
+  .world.m .fact { grid-template-columns: 1fr; gap: 6px; }
+  .world.m .tl { grid-template-columns: 1fr; margin-top: 50px; }
+  .world.m .tl li { padding: 0 0 56px 76px; min-height: 36px; }
+  .world.m .tl li::after { left: 15px; top: 36px; width: 6px; height: calc(100% - 36px); background: repeating-linear-gradient(180deg, rgba(81,116,147,.5) 0 14px, transparent 14px 28px); }
+  .world.m .tl li.solid::after { background: var(--brand-wine); }
+  /* UI on top of the canvas */
+  .hud-title { position: fixed; top: 18px; left: 24px; z-index: 5; font-size: .85rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--brand-steel); }
+  .dots { position: fixed; right: 22px; top: 50%; transform: translateY(-50%); z-index: 5; display: flex; flex-direction: column; gap: .8rem; }
+  .dot-nav { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--brand-steel); background: transparent; padding: 0; cursor: pointer; transition: .2s; }
+  .dot-nav.on { background: var(--brand-wine); border-color: var(--brand-wine); transform: scale(1.25); }
+  .arrows { position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%); z-index: 5; display: flex; gap: .9rem; }
+  .arrows button { width: 46px; height: 46px; border-radius: 50%; border: 2px solid var(--brand-steel); background: var(--bg); color: var(--brand-steel); font-size: 1.2rem; cursor: pointer; transition: .2s; }
+  .arrows button:hover { background: var(--brand-wine); border-color: var(--brand-wine); color: var(--brand-cream); }
+
+  @media (max-width: 799px) {
+    .dots { display: none; }
+    .hud-title { font-size: .7rem; top: 12px; left: 16px; }
+    body.touring .arrows { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { .world.animate { transition: none; } }
+</style>
+</head>
+<body>
+
+<div class="hud-title">Yhteistyöehdotus · More Than</div>
+
+<div class="stage">
+<div class="world" id="world">
+  <svg class="trail" viewBox="0 0 2900 6400" aria-hidden="true"><path id="trail"/></svg>
+
+  <section class="panel intro" data-name="Intro" data-w="1250">
+    <div class="no">Yhteistyöehdotus</div>
+    <h2>AI-agentit myynnin aisapariksi</h2>
+    <div class="sub">More Than</div>
+    <div class="scatter">
+      <span class="ring"></span><span class="dot s"></span><span class="dot"></span>
+      <div class="pic felix" id="poster" role="button" tabindex="0" aria-label="Katso videoesittely"><img src="../../assets/photo.png" alt="Felix Erkinheimo"><span class="play"></span></div>
+      <button class="more tour-btn" id="tourBtn" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg><span id="tourBtnTxt">Katso videoesittely</span></button>
+      <img class="pic club" src="../../assets/more-than.png" alt="More Than">
+    </div>
+  </section>
+
+  <section class="panel" data-name="Resurssit" data-w="1050">
+    <div class="no">02</div>
+    <h2 class="long"><span class="hl">Yli 50 %</span> myynnin resurssinkäytöstä on turhaa.</h2>
+    <ul class="bul">
+      <li>AI-agentit ja ohjelmistorobotiikka mahdollistavat myynnin admin-työn automatisoinnin.</li>
+      <li>Voittavat myyntitiimit edistävät myynti-caseja ja kasvattavat myyntiputkea.</li>
+    </ul>
+  </section>
+
+  <section class="panel" data-name="Mihin aika kuluu" data-w="1300">
+    <div class="no">03</div>
+    <h2>Mihin myynnin aika kuluu?</h2>
+    <div class="facts">
+      <div class="fact">
+        <div><small>Vain</small><b>35 %</b></div>
+        <p>myyntitiimien ajasta kuluu varsinaiseen myyntiin. Loput manuaaliseen prospektointiin, CRM-datasyöttöön ja hallinnollisiin tehtäviin.</p>
+      </div>
+      <div class="fact">
+        <div><b>42 %</b></div>
+        <p>myyjistä käyttää mielestään liian montaa työkalua työssään.</p>
+      </div>
+      <p class="analogy">Vertaa tilannetta siihen, että lentokoneen pilotti hoitaisi lentämisen ohessa myös matkustamohenkilökunnan tehtävät.</p>
+    </div>
+  </section>
+
+  <section class="panel" data-name="Pyramidi" data-w="1100">
+    <div class="no">04</div>
+    <h2 class="long">AI-valmius rakentuu kerroksittain</h2>
+    <div class="pyramid">
+      <svg viewBox="0 0 1000 640" role="img" aria-label="Pyramidi: alhaalla data ja prosessit, keskellä automaatiot ja AI-koneisto, ylhäällä AI-rajapinta">
+        <polygon points="500,10 650.8,210 349.2,210" fill="#56061D"/>
+        <polygon points="343.1,218 656.9,218 801.6,410 198.4,410" fill="#517493"/>
+        <polygon points="192.3,418 807.7,418 960,620 40,620" fill="#022E4C"/>
+        <g fill="#E2D9CB" font-weight="600" text-anchor="middle">
+          <text x="500" y="182" font-size="32">AI-rajapinta</text>
+          <text x="500" y="302" font-size="36">Automaatiot ja</text>
+          <text x="500" y="348" font-size="36">AI-koneisto</text>
+          <text x="500" y="506" font-size="38">Data ja prosessit muodossa,</text>
+          <text x="500" y="552" font-size="38">jonka AI ymmärtää</text>
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  <section class="panel" data-name="Futures Platform" data-w="1500">
+    <div class="no">05</div>
+    <h2>Case: Futures Platform</h2>
+    <div class="body">
+      <p>SaaS-palvelu, digitaalinen työkalu, joka auttaa organisaatioita ennakoimaan tulevaisuuden trendejä, muutosilmiöitä sekä riskejä strategisen suunnittelun ja innovoinnin tueksi.</p>
+    </div>
+    <ol class="tl">
+      <li class="done solid">Prosessien ja pullonkaulojen kartoitus</li>
+      <li class="done">Inbound-liidien automaatiot</li>
+      <li>Markkinamonitoroinnin automaatio</li>
+      <li>AI-infrastruktuurin kehitys</li>
+    </ol>
+  </section>
+
+  <section class="panel" data-name="Snow Secure" data-w="1050">
+    <div class="no">06</div>
+    <h2>Case: Snow Secure</h2>
+  </section>
+
+  <section class="panel" data-name="Tausta" data-w="1050">
+    <div class="no">02</div>
+    <h2>Tausta</h2>
+    <div class="body">
+      <p>More Than kasvaa. Yrityksen asiantuntijapalveluille on kysyntää ja myynti vetää.</p>
+      <p>Kasvun tehostamiseen ja markkinan avaamiseen etsitään uusia keinoja. Tavoitteena on nopea ja resurssitehokas kasvu.</p>
+    </div>
+  </section>
+
+  <section class="panel" data-name="Haasteet" data-w="1100">
+    <div class="no">03</div>
+    <h2>Haasteet</h2>
+    <div class="body">
+      <p>Suoramyynnissä on useampia aikaa vieviä manuaalisia vaiheita. Tapaamisiin valmistautuminen tehdään tekoälyavusteisesti, mutta prosessi vaatii työtä usealla eri alustalla ja tiedot liikkuvat tiimille manuaalisesti. Tarjousten laatiminen tapahtuu käsin jokaiseen diiliin.</p>
+      <p>Toistuvat tehtävät luovat kitkaa myyntiin. Tämä jarruttaa kauppojen etenemisvauhtia.</p>
+    </div>
+  </section>
+
+  <section class="panel" data-name="AI-agentit ja automaatiot" data-w="1100">
+    <div class="no">04</div>
+    <h2 class="long">AI-agentit ja automaatiot myyntiin</h2>
+    <ul class="bul">
+      <li>Tekoäly ja automaatio poistavat toistuvat vaiheet myynnin arjesta.</li>
+      <li>AI-agentti hakee jokaisesta myynti-casesta taustatiedot ja lähettää ne automaatiolla tiimille.</li>
+      <li>Tarjousten laatiminen voidaan automatisoida.</li>
+      <li>Tekoäly muistaa, mitä on tehty, ja voi ehdottaa parannuksia tulosten perusteella.</li>
+      <li>Tekoälyavustajalle voidaan ulkoistaa tehtäviä, kuten CRM:n siivous tai myyntiraportin laatiminen.</li>
+    </ul>
+  </section>
+
+  <section class="panel" data-name="Malli" data-w="1100">
+    <div class="no">05</div>
+    <h2 class="long">Malli: Agenttien kehitys sopimuksen mukaan</h2>
+    <ul class="bul">
+      <li>Suunnitellaan, mitkä agentit ja automaatiot tuovat eniten lisäarvoa tiimille.</li>
+      <li>Kehitys priorisoidaan säästettyjen tuntien ja tehostuneen myynnin mukaan.</li>
+      <li>Vastaan suunnittelusta, kehityksestä sekä optimoinnista.</li>
+    </ul>
+    <div class="who">
+      <div class="tag">Kuka?</div>
+      <p><b>Felix Erkinheimo</b> – 10+ vuotta markkinointia ja GTM:ää</p>
+      <button class="more" type="button" data-open="bio">Lue lisää</button>
+    </div>
+
+    <div class="casefull" id="casebio">
+      <button class="close" type="button" data-close>Sulje &times;</button>
+      <div class="tag">Kuka?</div>
+      <h3>Felix Erkinheimo</h3>
+      <div class="bio-grid">
+        <ul class="list">
+          <li><b>10+ vuotta markkinointia ja GTM:ää</b><span>yrittäjänä, markkinoijana ja rakentajana</span></li>
+          <li><b>Startup-kasvutiimien johtamista</b><span>ja markkinointikoneistojen rakentamista kansainvälisille yrityksille</span></li>
+          <li><b>AI-agentit ja automaatiot</b><span>myyntiin ja markkinointiin 5 vuoden kokemuksella</span></li>
+        </ul>
+        <img class="pic" src="../../assets/photo.png" alt="Felix Erkinheimo">
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" data-name="Vastaavia projekteja" data-w="1500">
+    <div class="no">06</div>
+    <h2 class="long">Vastaavia aikaisempia projekteja</h2>
+    <div class="cases">
+        <article class="case" data-i="1">
+          <div class="tag">Seidat</div>
+          <h3>Yritystietokanta ja markkinasignaalit</h3>
+          <div class="fade"><p>Seidatille lähdettiin hakemaan kansainvälistä kasvua hotellialasta. Virtuaalikierrokset ovat osa Seidatin tarjontaa hotelleille. Ensin tarvittiin yritystietokanta myyntiä varten. Sitten tarvittiin tieto mahdollisesta olemassa olevasta virtuaalikierroksesta myynnin personointia varten.</p><p>Tuotettiin Clay-työkalun ja OpenAI:n rajapinnan avulla AI-agentti, joka hakee kustakin kohdemaasta kaikki potentiaaliset asiakkaat ja tarkistaa jokaisen kohdalla, löytyykö verkosta tietoa olemassa olevasta virtuaalikierroksesta. Tämä tehtiin hakemalla yrityksen verkkosivulta avainsanoja, kuten virtuaalikierrostarjoajien nimiä.</p></div>
+          <button class="more" type="button" data-open="1">Näytä lisää</button>
+          <div class="casefull" id="case1">
+            <button class="close" type="button" data-close>Sulje &times;</button>
+            <div class="tag">Seidat</div>
+            <h3>Yritystietokanta ja markkinasignaalit</h3>
+            <div class="cols">
+              <div><h4>Tausta</h4><p>Seidatille lähdettiin hakemaan kansainvälistä kasvua hotellialasta. Virtuaalikierrokset ovat osa Seidatin tarjontaa hotelleille. Ensin tarvittiin yritystietokanta myyntiä varten. Sitten tarvittiin tieto mahdollisesta olemassa olevasta virtuaalikierroksesta myynnin personointia varten.</p></div>
+              <div><h4>Mitä</h4><p>Tuotettiin Clay-työkalun ja OpenAI:n rajapinnan avulla AI-agentti, joka hakee kustakin kohdemaasta kaikki potentiaaliset asiakkaat ja tarkistaa jokaisen kohdalla, löytyykö verkosta tietoa olemassa olevasta virtuaalikierroksesta. Tämä tehtiin hakemalla yrityksen verkkosivulta avainsanoja, kuten virtuaalikierrostarjoajien nimiä.</p></div>
+              <div><h4>Tulos</h4><p>Yritystietokanta kasvoi 6000+ yrityksellä. Myynti voi kohdistaa resursseja yrityksiin, joissa tarve ratkaisulle on suurin, sekä personoida myyntiviestinnän tämän perusteella.</p></div>
+            </div>
+            <div class="chips"><span>Clay</span><span>OpenAI API</span><span>Verkkotutkimus</span></div>
+          </div>
+        </article>
+        <article class="case" data-i="2">
+          <div class="tag">High-ticket B2B-myyntitiimi</div>
+          <h3>Myynnin outreach-portaali</h3>
+          <div class="fade"><p>Tiimi myy korkean hintaluokan B2B-ratkaisuja. Markkinakoko on pieni, eikä massasähköposti ja automatisoitu viestintä sovi kohderyhmälle. Samaan aikaan manuaalinen sähköpostien lähettäminen on liian hidasta.</p><p>Rakensin Attio-CRM:ään custom UI-elementin myyntiviestien lähettämiseen. Se suodattaa henkilöt markkinasegmentin mukaan ja kirjoittaa segmentille personoidun viestiluonnoksen. Myyjä muokkaa ja tarkistaa jokaisen viestin ennen lähettämistä.</p></div>
+          <button class="more" type="button" data-open="2">Näytä lisää</button>
+          <div class="casefull" id="case2">
+            <button class="close" type="button" data-close>Sulje &times;</button>
+            <div class="tag">High-ticket B2B-myyntitiimi</div>
+            <h3>Myynnin outreach-portaali</h3>
+            <div class="cols">
+              <div><h4>Tausta</h4><p>Tiimi myy korkean hintaluokan B2B-ratkaisuja. Markkinakoko on pieni, eikä massasähköposti ja automatisoitu viestintä sovi kohderyhmälle. Samaan aikaan manuaalinen sähköpostien lähettäminen on liian hidasta.</p></div>
+              <div><h4>Mitä</h4><p>Rakensin Attio-CRM:ään custom UI-elementin myyntiviestien lähettämiseen. Se suodattaa henkilöt markkinasegmentin mukaan ja kirjoittaa segmentille personoidun viestiluonnoksen. Myyjä muokkaa ja tarkistaa jokaisen viestin ennen lähettämistä.</p></div>
+              <div><h4>Tulos</h4><p>Varmistetaan, että kaikki myynnin follow-up-viestit lähtevät ajallaan ja ovat laadultaan korkeita. Tämä on ensisijaisen tärkeää yritykselle, sillä myynti-casejen määrä on pienempi ja kaupan keskikoko on 100 000+ euroa.</p></div>
+            </div>
+            <div class="chips"><span>Attio</span><span>Attio SDK App</span><span>Claude Code</span></div>
+          </div>
+        </article>
+        <article class="case" data-i="3">
+          <div class="tag">Futures Platform</div>
+          <h3>Automatisoitu LinkedIn-sekvenssi inbound-liideille</h3>
+          <div class="fade"><p>Futures Platformin myyntitiimi lähetti manuaalisesti jokaiselle verkkosivuliidille LinkedIn-viestin kopioimalla tekoälyn tuottaman viestin viestikenttään. Kymmenien viestien lähettäminen viikottain oli merkittävä rasite tiimille. Lisäksi manuaalisesta LinkedIn-viestinnästä ja tuloksesta ei jäänyt muistijälkeä yrityksen CRM:ään.</p><p>Rakensimme HubSpotin tekoälyllä sekä FirstTouch-automaatioalustalla automaation, joka lähettää inbound-liideille kontaktointipyynnön, personoidun viestin sekä follow-up-viestin.</p></div>
+          <button class="more" type="button" data-open="3">Näytä lisää</button>
+          <div class="casefull" id="case3">
+            <button class="close" type="button" data-close>Sulje &times;</button>
+            <div class="tag">Futures Platform</div>
+            <h3>Automatisoitu LinkedIn-sekvenssi inbound-liideille</h3>
+            <div class="cols">
+              <div><h4>Miksi</h4><p>Futures Platformin myyntitiimi lähetti manuaalisesti jokaiselle verkkosivuliidille LinkedIn-viestin kopioimalla tekoälyn tuottaman viestin viestikenttään. Kymmenien viestien lähettäminen viikottain oli merkittävä rasite tiimille. Lisäksi manuaalisesta LinkedIn-viestinnästä ja tuloksesta ei jäänyt muistijälkeä yrityksen CRM:ään.</p></div>
+              <div><h4>Mitä</h4><p>Rakensimme HubSpotin tekoälyllä sekä FirstTouch-automaatioalustalla automaation, joka lähettää inbound-liideille kontaktointipyynnön, personoidun viestin sekä follow-up-viestin.</p></div>
+              <div><h4>Tulos</h4><p>Manuaaliseen viestintään käytetty aika voidaan hyödyntää muussa myynnissä, ja LinkedIn-viesteistä jää HubSpotiin merkintä, jolloin niihin voidaan reagoida nopeasti ja koko tiimi pysyy viestinnästä ajan tasalla.</p></div>
+            </div>
+            <div class="chips"><span>HubSpot</span><span>FirstTouch</span><span>LinkedIn</span></div>
+          </div>
+        </article>
+    </div>
+  </section>
+
+  <section class="panel price" data-name="Hinnoittelu" data-w="1100">
+    <div class="no">07</div>
+    <h2 class="long">Projektihinnoittelu</h2>
+    <div class="body">
+      <p>Jokaisen agentin kehitykseen sovitaan aikataulu ja kehitykseen allokoitava aika.</p>
+      <p>Esimerkkinä: yhden agentin kehittämiseen kuluu noin yksi päivä.</p>
+    </div>
+    <div class="stack">
+      <h3>Yhteistyöhön kuuluu myös</h3>
+      <div class="incl-grid">
+        <div class="inc">
+          <b>Koulutukset</b>
+          <span>Tiimi oppii käyttämään agentteja itse.</span>
+        </div>
+        <div class="inc">
+          <b>Dokumentaatio</b>
+          <span>Jokaisesta agentista jää selkeä kuvaus ja käyttöohje.</span>
+        </div>
+        <div class="inc">
+          <b>Käyttöönotto ja tuki</b>
+          <span>Agentit otetaan yhdessä käyttöön, ja tuki jatkuu käyttöönoton jälkeen.</span>
+        </div>
+        <div class="inc">
+          <b>Tulosten seuranta</b>
+          <span>Säästetyt tunnit ja myynnin kehitys raportoidaan säännöllisesti.</span>
+        </div>
+      </div>
+    </div>
+    <div class="plan one">
+      <small>Päivähinta</small>
+      <div class="amount">500 €<span>/päivä</span></div>
+    </div>
+  </section>
+</div>
+</div>
+
+<div class="dots" id="dots"></div>
+<div class="arrows">
+  <button id="up" aria-label="Edellinen">&uarr;</button>
+  <button id="down" aria-label="Seuraava">&darr;</button>
+</div>
+
+<div class="bubble" id="bubble" aria-label="Videoesittely">
+  <video id="tour" playsinline preload="none"></video>
+  <svg class="prog" viewBox="0 0 100 100" aria-hidden="true"><circle class="tr" cx="50" cy="50" r="46"/><circle class="br" id="bar" cx="50" cy="50" r="46"/></svg>
+  <div class="ctl">
+    <button id="tPlay" type="button" aria-label="Tauko / jatka"></button>
+    <button id="tMute" type="button" aria-label="Äänet päälle / pois"></button>
+    <button id="tClose" type="button" aria-label="Sulje videoesittely"><svg viewBox="0 0 24 24"><path class="s" d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+  <button class="resume" id="tResume" type="button">Jatka videoesittelyä</button>
+</div>
+
+<div class="rec" id="rec" hidden>
+  <b>Tallennustila</b> · <span id="recN">0</span> merkintää
+  <p>Paina "Katso videoesittely". Selaa nuolinäppäimillä ja avaa ikkunat oikeilla hetkillä puheen mukaan.</p>
+  <textarea id="recOut" readonly rows="6"></textarea>
+  <div><button id="recCopy" type="button">Kopioi JSON</button><button id="recClear" type="button">Tyhjennä</button></div>
+</div>
+
+<script>
+  const $ = id => document.getElementById(id);
+  const world = $('world');
+  const vid = $('tour');
+  const panels = [...document.querySelectorAll('.panel')];
+  const N = panels.length;
+  let W = 2900, H = 6400;
+
+  // steps: 0 = full overview, 1..N = the sections, N+1 = full overview again
+  const STEPS = N + 2;
+  let step = 0, busy = false, autoTimer, sub = 0;   // sub = which view of a tall section (phones only)
+
+  const box = p => ({ x: p.offsetLeft, y: p.offsetTop, w: p.offsetWidth, h: p.offsetHeight });
+
+  // dotted trail that links each section to the next: side to side when they sit next to each other, bottom to top when stacked
+  function drawTrail() {
+    let d = '';
+    for (let i = 1; i < N; i++) {
+      const a = box(panels[i - 1]), b = box(panels[i]);
+      let x0, y0, x1, y1;
+      if (b.y >= a.y + a.h + 60) {            // next one is clearly below: bottom edge -> top edge
+        x0 = a.x + a.w / 2; y0 = a.y + a.h + 30; x1 = b.x + b.w / 2; y1 = b.y - 30;
+        const my = (y0 + y1) / 2;
+        d += `M ${x0} ${y0} C ${x0} ${my}, ${x1} ${my}, ${x1} ${y1} `;
+      } else {                                // side by side: facing edges
+        const right = b.x > a.x;
+        x0 = right ? a.x + a.w + 30 : a.x - 30; y0 = a.y + Math.min(a.h / 2, 260);
+        x1 = right ? b.x - 30 : b.x + b.w + 30; y1 = b.y + Math.min(b.h / 2, 260);
+        const mx = (x0 + x1) / 2;
+        d += `M ${x0} ${y0} C ${mx} ${y0}, ${mx} ${y1}, ${x1} ${y1} `;
+      }
+    }
+    document.getElementById('trail').setAttribute('d', d);
+  }
+
+  const dots = document.getElementById('dots');
+  ['Yleiskuva', ...panels.map(p => p.dataset.name)].forEach((n, i) => {
+    const b = document.createElement('button');
+    b.className = 'dot-nav'; b.title = n; b.setAttribute('aria-label', n);
+    b.onclick = () => go(i);
+    dots.appendChild(b);
+  });
+
+  const isMobile = () => innerWidth < 800;
+  // desktop keeps the wide canvas; narrow screens stack the sections in a narrow zig-zag column
+  panels.forEach((p, i) => { if (i > 0) { const n = p.querySelector('.no'); if (n) n.textContent = String(i + 1).padStart(2, '0'); } });   // numbers follow the order
+  function layout() {
+    const mob = isMobile();
+    world.classList.toggle('m', mob);
+    if (!mob) {
+      const COL = [100, 1750], bottoms = [0, 0]; let prevTop = 0;
+      panels.forEach((p, i) => {
+        const c = i % 2;
+        p.style.width = p.dataset.w + 'px'; p.style.left = COL[c] + 'px';
+        const top = i === 0 ? 100 : Math.max(bottoms[c] + 260, prevTop + 380);
+        p.style.top = top + 'px'; bottoms[c] = top + p.offsetHeight; prevTop = top;
+      });
+      W = 3000; H = Math.max(...bottoms) + 300;
+    } else {
+      W = 1000;
+      panels.forEach(p => { p.style.width = '760px'; });
+      let y = 120;
+      panels.forEach((p, i) => { p.style.left = (i % 2 ? 200 : 40) + 'px'; p.style.top = y + 'px'; y += p.offsetHeight + 280; });
+      H = y - 280 + 200;
+    }
+    world.style.width = W + 'px'; world.style.height = H + 'px';
+    world.querySelector('.trail').setAttribute('viewBox', `0 0 ${W} ${H}`);
+    alignLogos(); drawTrail();
+  }
+
+  // area of the screen the slide may use (smaller while the round video is on screen)
+  function fitArea() {
+    const vw = innerWidth, vh = innerHeight;
+    let aw = vw * 0.82, ah = vh * 0.8, cx = vw / 2, cy = vh / 2;
+    if (isMobile()) { aw = vw * 0.9; ah = vh * 0.76; }
+    if (bubble.classList.contains('on')) {          // during the video tour keep the slide clear of the round video
+      const sz = vw < 700 ? 120 : 200;
+      if (!isMobile()) { const R = sz + 48; aw = Math.min(aw, vw - R - vw * 0.08); cx = R + (vw - R) / 2; }
+      else { ah = Math.min(ah, vh - sz - 48 - vh * 0.06); cy = (vh - sz - 48) / 2; }
+    }
+    return { aw, ah, cx, cy };
+  }
+  // On phones a very tall section is shown at a readable size and read in several views
+  function viewGeom(n) {
+    const b = box(panels[n - 1]), f = fitArea(), kW = f.aw / b.w;
+    if (!isMobile() || b.h * kW <= f.ah * 1.02) return { views: 1, kW, f, b };
+    const viewH = f.ah / kW, stepH = viewH * 0.85;
+    return { views: 1 + Math.ceil((b.h - viewH) / stepH), viewH, stepH, kW, f, b };
+  }
+  const viewsFor = n => (n >= 1 && n <= N) ? viewGeom(n).views : 1;
+  const topInPanel = (el, panel) => { let y = 0; while (el && el !== panel) { y += el.offsetTop; el = el.offsetParent; } return y; };
+
+  function transformFor(s, sb = sub) {
+    const vw = innerWidth, vh = innerHeight;
+    if (s === 0 || s === STEPS - 1) {
+      const k = Math.min(vw / W, vh / (H + 160)) * 0.94;
+      return { k, x: (vw - W * k) / 2, y: (vh - H * k) / 2 };
+    }
+    const g = viewGeom(s), { b, f } = g;
+    if (g.views > 1) {
+      const top = Math.min(b.y + Math.min(sb, g.views - 1) * g.stepH, b.y + b.h - g.viewH);
+      return { k: g.kW, x: f.cx - (b.x + b.w / 2) * g.kW, y: f.cy - (top + g.viewH / 2) * g.kW };
+    }
+    const k = Math.min(f.aw / b.w, f.ah / b.h);
+    return { k, x: f.cx - (b.x + b.w / 2) * k, y: f.cy - (b.y + b.h / 2) * k };
+  }
+
+  function apply(animate) {
+    const t = transformFor(step);
+    world.classList.toggle('animate', animate);
+    world.style.transform = `translate(${t.x}px, ${t.y}px) scale(${t.k})`;
+    const section = step >= 1 && step <= N;
+    world.classList.toggle('focus', section);
+    panels.forEach((p, i) => p.classList.toggle('active', section && i === step - 1));
+    [...dots.children].forEach((b, i) => b.classList.toggle('on', i === (step === STEPS - 1 ? 0 : step)));
+  }
+
+  const RECORD = new URLSearchParams(location.search).has('record');
+  const tour = { state: 'idle', cues: [], idx: 0, ready: false, grace: 0, raf: 0 };   // idle | playing | paused | interrupted | ended
+
+  // camera move that ignores the busy lock (used by the video cues and by go())
+  function moveTo(n, s0 = 0) {
+    clearTimeout(autoTimer);
+    if (n === step) return false;
+    step = n; sub = s0; busy = true; apply(true);
+    setTimeout(() => busy = false, 900);
+    return true;
+  }
+  // case windows: overlays on desktop; on phones they open in place, so the sections below make room
+  function showCase(id) {
+    closeCases(true);
+    const c = $('case' + id);
+    if (c) { c.classList.add('on'); c.parentElement.classList.add('open'); }
+    if (isMobile()) {
+      layout();
+      if (c && step >= 1 && step <= N) { const g = viewGeom(step); if (g.views > 1) sub = Math.min(g.views - 1, Math.max(0, Math.floor(topInPanel(c, panels[step - 1]) / g.stepH))); }
+      apply(true);
+    }
+  }
+  function closeCases(silent) {
+    const any = document.querySelector('.casefull.on');
+    document.querySelectorAll('.casefull.on').forEach(c => { c.classList.remove('on'); c.parentElement.classList.remove('open'); });
+    if (any && !silent && isMobile()) { layout(); if (step >= 1 && step <= N) sub = Math.min(sub, viewsFor(step) - 1); apply(true); }
+  }
+
+  // a viewer's own action during the tour pauses the video (not while recording cues)
+  function userNav() { if (!RECORD && tour.state === 'playing') interrupt(); }
+
+  function go(n) {
+    if (busy) return;
+    if (tour.state === 'playing' && !RECORD && performance.now() < tour.grace) return;   // ignore scroll inertia right after pressing play
+    if (n >= STEPS) n = 1;            // from the final full view, go straight to the first slide
+    else if (n < 0) n = N;            // back from the opening full view, go to the last slide
+    // phones: a tall section is read in several views before moving on
+    if (isMobile() && step >= 1 && step <= N) {
+      const v = viewsFor(step);
+      const dir = (n === step + 1 && sub < v - 1) ? 1 : (n === step - 1 && sub > 0) ? -1 : 0;
+      if (dir) { userNav(); closeCases(); sub += dir; busy = true; apply(true); setTimeout(() => busy = false, 900); return; }
+    }
+    if (n !== step) userNav();
+    closeCases();
+    const back = isMobile() && ((n === step - 1 && n >= 1) || (step === 0 && n === N));
+    if (moveTo(n, back ? viewsFor(n) - 1 : 0)) logCue({ step: n });
+  }
+  document.querySelectorAll('[data-open]').forEach(b => b.addEventListener('click', e => {
+    e.stopPropagation(); userNav(); showCase(b.dataset.open); logCue({ open: b.dataset.open });
+  }));
+  document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); userNav(); closeCases(); logCue({ close: true }); }));
+  addEventListener('keydown', e => { if (e.key === 'Escape' && document.querySelector('.casefull.on')) { userNav(); closeCases(); logCue({ close: true }); } });
+  const next = () => go(step + 1), prev = () => go(step - 1);
+
+  document.getElementById('down').onclick = next;
+  document.getElementById('up').onclick = prev;
+  panels.forEach((p, i) => p.addEventListener('click', () => { if (!world.classList.contains('focus')) go(i + 1); }));
+
+  addEventListener('wheel', e => { e.preventDefault(); if (Math.abs(e.deltaY) < 8) return; e.deltaY > 0 ? next() : prev(); }, { passive: false });
+  addEventListener('keydown', e => {
+    if (['ArrowDown', 'ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); next(); }
+    if (['ArrowUp', 'ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); prev(); }
+    if (e.key === 'Home') go(0);
+  });
+  let y0 = null;
+  addEventListener('touchstart', e => y0 = e.touches[0].clientY, { passive: true });
+  addEventListener('touchend', e => {
+    if (y0 === null) return;
+    const dy = e.changedTouches[0].clientY - y0;
+    if (Math.abs(dy) > 50) dy < 0 ? next() : prev();
+    y0 = null;
+  });
+  addEventListener('resize', () => { if (isMobile() !== world.classList.contains('m')) layout(); apply(false); if (bubble.classList.contains('on') && tour.state !== 'idle') corner(true); });
+
+  // ---------- video presentation: round video that scrolls the offer ----------
+  let videoSrc = 'video/esittely-2.mp4';
+  const poster = $('poster'), btn = $('tourBtn'), btnTxt = $('tourBtnTxt'), bubble = $('bubble'), bar = $('bar');
+  const tPlay = $('tPlay'), tMute = $('tMute'), tClose = $('tClose'), tResume = $('tResume');
+  const CIRC = 289.03;
+  const ico = {
+    play: '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>',
+    pause: '<svg viewBox="0 0 24 24"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>',
+    sound: '<svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 4V5L7 9z"/><path class="s" d="M16 8.5a5 5 0 010 7M18.5 6a8.5 8.5 0 010 12"/></svg>',
+    muted: '<svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 4V5L7 9z"/><path class="s" d="M16 9l5 6M21 9l-5 6"/></svg>'
+  };
+  const paintCtl = () => { tPlay.innerHTML = vid.paused ? ico.play : ico.pause; tMute.innerHTML = vid.muted ? ico.muted : ico.sound; };
+  paintCtl();
+
+  // the button and the round poster only come alive once a video file exists
+  function enableTour() {
+    tour.ready = true;
+    poster.classList.add('has-video'); btn.classList.add('on');
+    poster.onclick = btn.onclick = startTour;
+    poster.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); startTour(); } };
+  }
+  if (window.OFFER_NO_VIDEO) {
+    // no video for this offer yet: the button stays hidden
+  } else if (window.OFFER_VIDEO) {                          // password-protected version: download + decrypt the video first
+    btn.classList.add('on'); btn.disabled = true; btnTxt.textContent = 'Ladataan videota…';
+    window.OFFER_VIDEO(p => { btnTxt.textContent = 'Ladataan videota… ' + Math.round(p * 100) + ' %'; })
+      .then(url => { videoSrc = url; btn.disabled = false; btnTxt.textContent = 'Katso videoesittely'; enableTour(); })
+      .catch(() => btn.classList.remove('on'));
+  } else {
+    fetch(videoSrc, { method: 'HEAD' }).then(r => { if (r.ok) enableTour(); }).catch(() => {});
+  }
+  const cuesSource = window.OFFER_CUES ? Promise.resolve(window.OFFER_CUES)
+    : fetch('cues.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : []).catch(() => []);
+  cuesSource.then(c => { if (!RECORD && Array.isArray(c)) tour.cues = c.slice().sort((a, b) => a.t - b.t); });
+
+  const place = (l, t, w, h) => Object.assign(bubble.style, { left: l + 'px', top: t + 'px', width: w + 'px', height: h + 'px' });
+  function corner(instant) {
+    if (instant) bubble.style.transition = 'none';
+    const sz = innerWidth < 700 ? 120 : 200;
+    place(24, innerHeight - sz - 24, sz, sz);
+    if (instant) { void bubble.offsetWidth; bubble.style.transition = ''; }
+  }
+
+  // what the view should look like at time t (so seeking and resuming always land right)
+  function stateAt(t) {
+    let st = 1, open = null;
+    tour.cues.forEach(c => {
+      if (c.t > t) return;
+      if ('step' in c) { st = c.step; open = null; } else if ('open' in c) open = String(c.open); else if (c.close) open = null;
+    });
+    return { st, open };
+  }
+  function syncTo(t) {
+    const { st, open } = stateAt(t);
+    moveTo(st); closeCases(); if (open) showCase(open);
+    const k = tour.cues.findIndex(c => c.t > t);
+    tour.idx = k < 0 ? tour.cues.length : k;
+  }
+  function runCue(c) {
+    if ('step' in c) { closeCases(); moveTo(c.step); } else if ('open' in c) showCase(c.open); else if (c.close) closeCases();
+  }
+  function fireCues() {
+    const t = vid.currentTime;
+    while (tour.idx < tour.cues.length && tour.cues[tour.idx].t <= t) runCue(tour.cues[tour.idx++]);
+    autoSub(t);
+  }
+  // phones: while a tall section is on screen, move through its views in proportion to the time it is narrated
+  function autoSub(t) {
+    if (!isMobile() || step < 1 || step > N) return;
+    const v = viewsFor(step); if (v < 2) return;
+    let a = 0, e = vid.duration || t + 1;
+    for (const c of tour.cues) if ('step' in c) { if (c.t <= t) a = c.t; else { e = c.t; break; } }
+    const want = Math.min(v - 1, Math.max(0, Math.floor((t - a) / Math.max(1, e - a) * v)));
+    if (want !== sub) { sub = want; apply(true); }
+  }
+  function loop() {
+    cancelAnimationFrame(tour.raf);
+    const tick = () => {
+      if (tour.state !== 'playing') return;
+      bar.style.strokeDashoffset = CIRC * (1 - (vid.duration ? vid.currentTime / vid.duration : 0));
+      fireCues();
+      tour.raf = requestAnimationFrame(tick);
+    };
+    tour.raf = requestAnimationFrame(tick);
+  }
+
+  function startTour() {
+    if (!tour.ready || tour.state === 'playing') return;
+    clearTimeout(autoTimer);
+    closeCases();
+    if (!vid.getAttribute('src')) vid.src = videoSrc;
+    // the bubble appears right over the round poster, then glides to the corner
+    const r = poster.getBoundingClientRect();
+    bubble.style.transition = 'none'; place(r.left, r.top, r.width, r.height); void bubble.offsetWidth; bubble.style.transition = '';
+    bubble.classList.add('on'); bubble.classList.remove('interrupted'); document.body.classList.add('touring');
+    if (!moveTo(1)) apply(true);
+    setTimeout(() => corner(false), 40);
+    vid.currentTime = 0; vid.muted = false;
+    tour.idx = 0; tour.state = 'playing'; tour.grace = performance.now() + 900;
+    btn.classList.remove('on');
+    if (RECORD) { recLog.length = 0; recLog.push({ t: 0, step: 1 }); renderRec(); }
+    const pl = vid.play(); if (pl && pl.catch) pl.catch(() => { tour.state = 'paused'; paintCtl(); });
+    loop(); paintCtl();
+  }
+  function interrupt() {            // the viewer took over: pause and offer "Jatka"
+    vid.pause(); tour.state = 'interrupted'; cancelAnimationFrame(tour.raf);
+    bubble.classList.add('interrupted'); paintCtl();
+  }
+  function resumeTour() {
+    syncTo(vid.currentTime);
+    bubble.classList.remove('interrupted');
+    tour.state = 'playing'; tour.grace = performance.now() + 900;
+    vid.play(); loop(); paintCtl();
+  }
+  function stopTour(ended) {
+    vid.pause(); cancelAnimationFrame(tour.raf); tour.state = 'idle';
+    bubble.classList.remove('on', 'interrupted'); document.body.classList.remove('touring'); bar.style.strokeDashoffset = CIRC;
+    if (step >= 1 && step <= N) apply(true);       // give the slide its full size back
+    btn.classList.add('on'); btnTxt.textContent = ended ? 'Katso uudelleen' : 'Katso videoesittely';
+    paintCtl();
+  }
+
+  tPlay.onclick = () => {
+    if (tour.state === 'interrupted') return resumeTour();
+    if (vid.paused) { syncTo(vid.currentTime); tour.state = 'playing'; vid.play(); loop(); }
+    else { vid.pause(); tour.state = 'paused'; cancelAnimationFrame(tour.raf); }
+    paintCtl();
+  };
+  tMute.onclick = () => { vid.muted = !vid.muted; paintCtl(); };
+  tClose.onclick = () => stopTour(false);
+  tResume.onclick = resumeTour;
+  vid.addEventListener('timeupdate', () => { if (tour.state === 'playing') fireCues(); });
+  vid.addEventListener('seeked', () => { if (tour.state === 'playing') syncTo(vid.currentTime); });
+  vid.addEventListener('play', paintCtl); vid.addEventListener('pause', paintCtl);
+  vid.addEventListener('ended', () => {
+    tour.state = 'ended'; cancelAnimationFrame(tour.raf);
+    closeCases(); moveTo(STEPS - 1);                 // finish on the full picture
+    setTimeout(() => stopTour(true), 2200);
+  });
+
+  // ---------- cue recorder (?record): logs the viewer's navigation with video timestamps ----------
+  const recLog = [];
+  const stamp = () => Math.round(vid.currentTime * 10) / 10;
+  function logCue(c) {
+    if (!RECORD || (tour.state !== 'playing' && tour.state !== 'paused')) return;
+    recLog.push(Object.assign({ t: stamp() }, c)); renderRec();
+  }
+  function renderRec() { $('recOut').value = JSON.stringify(recLog); $('recN').textContent = recLog.length; }
+  if (RECORD) {
+    $('rec').hidden = false;
+    $('recClear').onclick = () => { recLog.length = 0; renderRec(); };
+    $('recCopy').onclick = () => {
+      const o = $('recOut'); o.select();
+      (navigator.clipboard ? navigator.clipboard.writeText(o.value) : Promise.reject()).catch(() => document.execCommand('copy'));
+    };
+  }
+
+  // open on the full picture, then zoom into the title section
+  // the left-most tech logo sits directly under the "M" of "GTM"
+  function alignLogos() {
+    const m = document.querySelector('.inc .m'), sc = document.querySelector('.tool-scatter');
+    if (m && sc) sc.style.setProperty('--mx', (m.offsetLeft + m.offsetWidth / 2 - sc.offsetLeft) + 'px');
+  }
+
+  function start() {
+    layout();
+    apply(false);
+    autoTimer = setTimeout(() => { step = 1; busy = true; world.style.transitionDuration = '1.8s'; apply(true); setTimeout(() => { busy = false; world.style.transitionDuration = ''; }, 1900); }, 1100);
+  }
+  // show the full view straight away (before images and fonts finish loading), so the first thing seen is the whole picture
+  layout(); apply(false);
+  // once images and fonts are in, the section sizes are final: re-measure, then zoom into the first slide
+  if (document.readyState === 'complete') start(); else addEventListener('load', start);
+</script>
+</body>
+</html>
