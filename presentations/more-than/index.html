@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="robots" content="noindex, nofollow">
 <title>More Than – esitys – Felix Erkinheimo</title>
-<script>window.OFFER_NO_VIDEO = true;</script>
 <style>
   :root {
     --brand-navy: #022E4C;
@@ -123,41 +122,6 @@
   .tool-scatter .dot { position: absolute; border-radius: 50%; background: var(--brand-wine); width: 26px; height: 26px; }
   .tool-scatter .dot.s { background: var(--brand-steel); width: 16px; height: 16px; }
 
-  /* video presentation */
-  .scatter .felix { overflow: hidden; cursor: default; }
-  .scatter .felix img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; border-radius: 50%; }
-  .scatter .felix.has-video { cursor: pointer; }
-  .scatter .felix .play { display: none; position: absolute; left: 50%; top: 50%; width: 88px; height: 88px; margin: -44px 0 0 -44px; border-radius: 50%; background: rgba(86,6,29,.92); box-shadow: 0 8px 24px rgba(2,46,76,.35); transition: transform .25s; }
-  .scatter .felix .play::after { content: ""; position: absolute; left: 50%; top: 50%; margin: -17px 0 0 -10px; border-style: solid; border-width: 17px 0 17px 30px; border-color: transparent transparent transparent var(--brand-cream); }
-  .scatter .felix.has-video .play { display: block; }
-  .scatter .felix.has-video:hover .play { transform: scale(1.1); }
-  .tour-btn { position: absolute; left: 20px; top: 352px; margin: 0; display: none; align-items: center; gap: 14px; }
-  .tour-btn.on { display: inline-flex; }
-  .tour-btn:disabled { opacity: .6; cursor: progress; }
-  .tour-btn svg { width: 22px; height: 22px; fill: currentColor; }
-
-  .bubble { position: fixed; z-index: 30; left: 24px; top: 24px; width: 200px; height: 200px; opacity: 0; pointer-events: none;
-    transition: left .8s cubic-bezier(.65,0,.35,1), top .8s cubic-bezier(.65,0,.35,1), width .8s cubic-bezier(.65,0,.35,1), height .8s cubic-bezier(.65,0,.35,1), opacity .4s ease; }
-  .bubble.on { opacity: 1; pointer-events: auto; }
-  .bubble video { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 5px solid var(--bg); box-shadow: 0 14px 34px rgba(2,46,76,.35); background: var(--brand-navy); }
-  .bubble .prog { position: absolute; inset: -9px; width: calc(100% + 18px); height: calc(100% + 18px); transform: rotate(-90deg); pointer-events: none; }
-  .bubble .prog circle { fill: none; stroke-width: 3.2; }
-  .bubble .prog .tr { stroke: rgba(81,116,147,.35); }
-  .bubble .prog .br { stroke: var(--brand-wine); stroke-linecap: round; stroke-dasharray: 289.03; stroke-dashoffset: 289.03; }
-  .bubble .ctl { position: absolute; left: 6px; bottom: calc(100% + 18px); display: flex; gap: 8px; }
-  .bubble .ctl button { width: 38px; height: 38px; padding: 0; border-radius: 50%; border: 2px solid var(--brand-steel); background: var(--bg); color: var(--brand-steel); cursor: pointer; display: grid; place-items: center; transition: .2s; }
-  .bubble .ctl button:hover { background: var(--brand-wine); border-color: var(--brand-wine); color: var(--brand-cream); }
-  .bubble .ctl svg { width: 17px; height: 17px; fill: currentColor; stroke: currentColor; stroke-width: 0; }
-  .bubble .ctl svg .s { fill: none; stroke-width: 2; stroke-linecap: round; }
-  .bubble .resume { position: absolute; left: calc(100% + 18px); bottom: 14px; display: none; white-space: nowrap; background: var(--brand-wine); color: var(--brand-cream); border: 0; font: inherit; font-weight: 600; padding: 12px 22px; border-radius: 99px; cursor: pointer; box-shadow: 0 8px 22px rgba(2,46,76,.3); }
-  .bubble.interrupted .resume { display: block; }
-
-  .rec { position: fixed; z-index: 40; top: 14px; right: 60px; width: 320px; padding: 14px 16px; background: var(--bg); border: 2px solid var(--brand-wine); border-radius: 10px; font-size: 13px; box-shadow: 0 10px 30px rgba(2,46,76,.25); }
-  .rec p { margin: 8px 0; color: var(--brand-steel); line-height: 1.4; }
-  .rec textarea { width: 100%; font: 12px/1.3 ui-monospace, Consolas, monospace; border: 1px solid var(--brand-steel); border-radius: 6px; padding: 6px; background: #fff; }
-  .rec button { margin: 6px 6px 0 0; padding: 6px 14px; border-radius: 99px; border: 2px solid var(--brand-steel); background: none; color: var(--brand-navy); font: inherit; font-weight: 600; cursor: pointer; }
-  .rec button:hover { background: var(--brand-wine); border-color: var(--brand-wine); color: var(--brand-cream); }
-
   /* mobile: the sections are re-laid out as one narrow vertical trail so the text stays readable when zoomed to fit */
   body { touch-action: none; overscroll-behavior: none; }
   .world.m .panel h2 { font-size: 92px; }
@@ -208,7 +172,6 @@
   @media (max-width: 799px) {
     .dots { display: none; }
     .hud-title { font-size: .7rem; top: 12px; left: 16px; }
-    body.touring .arrows { display: none; }
   }
   @media (prefers-reduced-motion: reduce) { .world.animate { transition: none; } }
 </style>
@@ -227,8 +190,7 @@
     <div class="sub">More Than</div>
     <div class="scatter">
       <span class="ring"></span><span class="dot s"></span><span class="dot"></span>
-      <div class="pic felix" id="poster" role="button" tabindex="0" aria-label="Katso videoesittely"><img src="../../assets/photo.png" alt="Felix Erkinheimo"><span class="play"></span></div>
-      <button class="more tour-btn" id="tourBtn" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg><span id="tourBtnTxt">Katso videoesittely</span></button>
+      <img class="pic felix" src="../../assets/photo.png" alt="Felix Erkinheimo">
       <img class="pic club" src="../../assets/more-than.png" alt="More Than">
     </div>
   </section>
@@ -290,12 +252,6 @@
       <li>AI-infrastruktuurin kehitys</li>
     </ol>
   </section>
-
-  <section class="panel" data-name="Snow Secure" data-w="1050">
-    <div class="no">06</div>
-    <h2>Case: Snow Secure</h2>
-  </section>
-
   <section class="panel" data-name="Tausta" data-w="1050">
     <div class="no">02</div>
     <h2>Tausta</h2>
@@ -455,28 +411,9 @@
   <button id="down" aria-label="Seuraava">&darr;</button>
 </div>
 
-<div class="bubble" id="bubble" aria-label="Videoesittely">
-  <video id="tour" playsinline preload="none"></video>
-  <svg class="prog" viewBox="0 0 100 100" aria-hidden="true"><circle class="tr" cx="50" cy="50" r="46"/><circle class="br" id="bar" cx="50" cy="50" r="46"/></svg>
-  <div class="ctl">
-    <button id="tPlay" type="button" aria-label="Tauko / jatka"></button>
-    <button id="tMute" type="button" aria-label="Äänet päälle / pois"></button>
-    <button id="tClose" type="button" aria-label="Sulje videoesittely"><svg viewBox="0 0 24 24"><path class="s" d="M6 6l12 12M18 6L6 18"/></svg></button>
-  </div>
-  <button class="resume" id="tResume" type="button">Jatka videoesittelyä</button>
-</div>
-
-<div class="rec" id="rec" hidden>
-  <b>Tallennustila</b> · <span id="recN">0</span> merkintää
-  <p>Paina "Katso videoesittely". Selaa nuolinäppäimillä ja avaa ikkunat oikeilla hetkillä puheen mukaan.</p>
-  <textarea id="recOut" readonly rows="6"></textarea>
-  <div><button id="recCopy" type="button">Kopioi JSON</button><button id="recClear" type="button">Tyhjennä</button></div>
-</div>
-
 <script>
   const $ = id => document.getElementById(id);
   const world = $('world');
-  const vid = $('tour');
   const panels = [...document.querySelectorAll('.panel')];
   const N = panels.length;
   let W = 2900, H = 6400;
@@ -543,16 +480,11 @@
     alignLogos(); drawTrail();
   }
 
-  // area of the screen the slide may use (smaller while the round video is on screen)
+  // area of the screen the slide may use
   function fitArea() {
     const vw = innerWidth, vh = innerHeight;
     let aw = vw * 0.82, ah = vh * 0.8, cx = vw / 2, cy = vh / 2;
     if (isMobile()) { aw = vw * 0.9; ah = vh * 0.76; }
-    if (bubble.classList.contains('on')) {          // during the video tour keep the slide clear of the round video
-      const sz = vw < 700 ? 120 : 200;
-      if (!isMobile()) { const R = sz + 48; aw = Math.min(aw, vw - R - vw * 0.08); cx = R + (vw - R) / 2; }
-      else { ah = Math.min(ah, vh - sz - 48 - vh * 0.06); cy = (vh - sz - 48) / 2; }
-    }
     return { aw, ah, cx, cy };
   }
   // On phones a very tall section is shown at a readable size and read in several views
@@ -590,10 +522,7 @@
     [...dots.children].forEach((b, i) => b.classList.toggle('on', i === (step === STEPS - 1 ? 0 : step)));
   }
 
-  const RECORD = new URLSearchParams(location.search).has('record');
-  const tour = { state: 'idle', cues: [], idx: 0, ready: false, grace: 0, raf: 0 };   // idle | playing | paused | interrupted | ended
-
-  // camera move that ignores the busy lock (used by the video cues and by go())
+  // camera move that ignores the busy lock
   function moveTo(n, s0 = 0) {
     clearTimeout(autoTimer);
     if (n === step) return false;
@@ -618,30 +547,25 @@
     if (any && !silent && isMobile()) { layout(); if (step >= 1 && step <= N) sub = Math.min(sub, viewsFor(step) - 1); apply(true); }
   }
 
-  // a viewer's own action during the tour pauses the video (not while recording cues)
-  function userNav() { if (!RECORD && tour.state === 'playing') interrupt(); }
-
   function go(n) {
     if (busy) return;
-    if (tour.state === 'playing' && !RECORD && performance.now() < tour.grace) return;   // ignore scroll inertia right after pressing play
     if (n >= STEPS) n = 1;            // from the final full view, go straight to the first slide
     else if (n < 0) n = N;            // back from the opening full view, go to the last slide
     // phones: a tall section is read in several views before moving on
     if (isMobile() && step >= 1 && step <= N) {
       const v = viewsFor(step);
       const dir = (n === step + 1 && sub < v - 1) ? 1 : (n === step - 1 && sub > 0) ? -1 : 0;
-      if (dir) { userNav(); closeCases(); sub += dir; busy = true; apply(true); setTimeout(() => busy = false, 900); return; }
+      if (dir) { closeCases(); sub += dir; busy = true; apply(true); setTimeout(() => busy = false, 900); return; }
     }
-    if (n !== step) userNav();
     closeCases();
     const back = isMobile() && ((n === step - 1 && n >= 1) || (step === 0 && n === N));
-    if (moveTo(n, back ? viewsFor(n) - 1 : 0)) logCue({ step: n });
+    moveTo(n, back ? viewsFor(n) - 1 : 0);
   }
   document.querySelectorAll('[data-open]').forEach(b => b.addEventListener('click', e => {
-    e.stopPropagation(); userNav(); showCase(b.dataset.open); logCue({ open: b.dataset.open });
+    e.stopPropagation(); showCase(b.dataset.open);
   }));
-  document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); userNav(); closeCases(); logCue({ close: true }); }));
-  addEventListener('keydown', e => { if (e.key === 'Escape' && document.querySelector('.casefull.on')) { userNav(); closeCases(); logCue({ close: true }); } });
+  document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); closeCases(); }));
+  addEventListener('keydown', e => { if (e.key === 'Escape' && document.querySelector('.casefull.on')) closeCases(); });
   const next = () => go(step + 1), prev = () => go(step - 1);
 
   document.getElementById('down').onclick = next;
@@ -662,164 +586,7 @@
     if (Math.abs(dy) > 50) dy < 0 ? next() : prev();
     y0 = null;
   });
-  addEventListener('resize', () => { if (isMobile() !== world.classList.contains('m')) layout(); apply(false); if (bubble.classList.contains('on') && tour.state !== 'idle') corner(true); });
-
-  // ---------- video presentation: round video that scrolls the offer ----------
-  let videoSrc = 'video/esittely-2.mp4';
-  const poster = $('poster'), btn = $('tourBtn'), btnTxt = $('tourBtnTxt'), bubble = $('bubble'), bar = $('bar');
-  const tPlay = $('tPlay'), tMute = $('tMute'), tClose = $('tClose'), tResume = $('tResume');
-  const CIRC = 289.03;
-  const ico = {
-    play: '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>',
-    pause: '<svg viewBox="0 0 24 24"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>',
-    sound: '<svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 4V5L7 9z"/><path class="s" d="M16 8.5a5 5 0 010 7M18.5 6a8.5 8.5 0 010 12"/></svg>',
-    muted: '<svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 4V5L7 9z"/><path class="s" d="M16 9l5 6M21 9l-5 6"/></svg>'
-  };
-  const paintCtl = () => { tPlay.innerHTML = vid.paused ? ico.play : ico.pause; tMute.innerHTML = vid.muted ? ico.muted : ico.sound; };
-  paintCtl();
-
-  // the button and the round poster only come alive once a video file exists
-  function enableTour() {
-    tour.ready = true;
-    poster.classList.add('has-video'); btn.classList.add('on');
-    poster.onclick = btn.onclick = startTour;
-    poster.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); startTour(); } };
-  }
-  if (window.OFFER_NO_VIDEO) {
-    // no video for this offer yet: the button stays hidden
-  } else if (window.OFFER_VIDEO) {                          // password-protected version: download + decrypt the video first
-    btn.classList.add('on'); btn.disabled = true; btnTxt.textContent = 'Ladataan videota…';
-    window.OFFER_VIDEO(p => { btnTxt.textContent = 'Ladataan videota… ' + Math.round(p * 100) + ' %'; })
-      .then(url => { videoSrc = url; btn.disabled = false; btnTxt.textContent = 'Katso videoesittely'; enableTour(); })
-      .catch(() => btn.classList.remove('on'));
-  } else {
-    fetch(videoSrc, { method: 'HEAD' }).then(r => { if (r.ok) enableTour(); }).catch(() => {});
-  }
-  const cuesSource = window.OFFER_CUES ? Promise.resolve(window.OFFER_CUES)
-    : fetch('cues.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : []).catch(() => []);
-  cuesSource.then(c => { if (!RECORD && Array.isArray(c)) tour.cues = c.slice().sort((a, b) => a.t - b.t); });
-
-  const place = (l, t, w, h) => Object.assign(bubble.style, { left: l + 'px', top: t + 'px', width: w + 'px', height: h + 'px' });
-  function corner(instant) {
-    if (instant) bubble.style.transition = 'none';
-    const sz = innerWidth < 700 ? 120 : 200;
-    place(24, innerHeight - sz - 24, sz, sz);
-    if (instant) { void bubble.offsetWidth; bubble.style.transition = ''; }
-  }
-
-  // what the view should look like at time t (so seeking and resuming always land right)
-  function stateAt(t) {
-    let st = 1, open = null;
-    tour.cues.forEach(c => {
-      if (c.t > t) return;
-      if ('step' in c) { st = c.step; open = null; } else if ('open' in c) open = String(c.open); else if (c.close) open = null;
-    });
-    return { st, open };
-  }
-  function syncTo(t) {
-    const { st, open } = stateAt(t);
-    moveTo(st); closeCases(); if (open) showCase(open);
-    const k = tour.cues.findIndex(c => c.t > t);
-    tour.idx = k < 0 ? tour.cues.length : k;
-  }
-  function runCue(c) {
-    if ('step' in c) { closeCases(); moveTo(c.step); } else if ('open' in c) showCase(c.open); else if (c.close) closeCases();
-  }
-  function fireCues() {
-    const t = vid.currentTime;
-    while (tour.idx < tour.cues.length && tour.cues[tour.idx].t <= t) runCue(tour.cues[tour.idx++]);
-    autoSub(t);
-  }
-  // phones: while a tall section is on screen, move through its views in proportion to the time it is narrated
-  function autoSub(t) {
-    if (!isMobile() || step < 1 || step > N) return;
-    const v = viewsFor(step); if (v < 2) return;
-    let a = 0, e = vid.duration || t + 1;
-    for (const c of tour.cues) if ('step' in c) { if (c.t <= t) a = c.t; else { e = c.t; break; } }
-    const want = Math.min(v - 1, Math.max(0, Math.floor((t - a) / Math.max(1, e - a) * v)));
-    if (want !== sub) { sub = want; apply(true); }
-  }
-  function loop() {
-    cancelAnimationFrame(tour.raf);
-    const tick = () => {
-      if (tour.state !== 'playing') return;
-      bar.style.strokeDashoffset = CIRC * (1 - (vid.duration ? vid.currentTime / vid.duration : 0));
-      fireCues();
-      tour.raf = requestAnimationFrame(tick);
-    };
-    tour.raf = requestAnimationFrame(tick);
-  }
-
-  function startTour() {
-    if (!tour.ready || tour.state === 'playing') return;
-    clearTimeout(autoTimer);
-    closeCases();
-    if (!vid.getAttribute('src')) vid.src = videoSrc;
-    // the bubble appears right over the round poster, then glides to the corner
-    const r = poster.getBoundingClientRect();
-    bubble.style.transition = 'none'; place(r.left, r.top, r.width, r.height); void bubble.offsetWidth; bubble.style.transition = '';
-    bubble.classList.add('on'); bubble.classList.remove('interrupted'); document.body.classList.add('touring');
-    if (!moveTo(1)) apply(true);
-    setTimeout(() => corner(false), 40);
-    vid.currentTime = 0; vid.muted = false;
-    tour.idx = 0; tour.state = 'playing'; tour.grace = performance.now() + 900;
-    btn.classList.remove('on');
-    if (RECORD) { recLog.length = 0; recLog.push({ t: 0, step: 1 }); renderRec(); }
-    const pl = vid.play(); if (pl && pl.catch) pl.catch(() => { tour.state = 'paused'; paintCtl(); });
-    loop(); paintCtl();
-  }
-  function interrupt() {            // the viewer took over: pause and offer "Jatka"
-    vid.pause(); tour.state = 'interrupted'; cancelAnimationFrame(tour.raf);
-    bubble.classList.add('interrupted'); paintCtl();
-  }
-  function resumeTour() {
-    syncTo(vid.currentTime);
-    bubble.classList.remove('interrupted');
-    tour.state = 'playing'; tour.grace = performance.now() + 900;
-    vid.play(); loop(); paintCtl();
-  }
-  function stopTour(ended) {
-    vid.pause(); cancelAnimationFrame(tour.raf); tour.state = 'idle';
-    bubble.classList.remove('on', 'interrupted'); document.body.classList.remove('touring'); bar.style.strokeDashoffset = CIRC;
-    if (step >= 1 && step <= N) apply(true);       // give the slide its full size back
-    btn.classList.add('on'); btnTxt.textContent = ended ? 'Katso uudelleen' : 'Katso videoesittely';
-    paintCtl();
-  }
-
-  tPlay.onclick = () => {
-    if (tour.state === 'interrupted') return resumeTour();
-    if (vid.paused) { syncTo(vid.currentTime); tour.state = 'playing'; vid.play(); loop(); }
-    else { vid.pause(); tour.state = 'paused'; cancelAnimationFrame(tour.raf); }
-    paintCtl();
-  };
-  tMute.onclick = () => { vid.muted = !vid.muted; paintCtl(); };
-  tClose.onclick = () => stopTour(false);
-  tResume.onclick = resumeTour;
-  vid.addEventListener('timeupdate', () => { if (tour.state === 'playing') fireCues(); });
-  vid.addEventListener('seeked', () => { if (tour.state === 'playing') syncTo(vid.currentTime); });
-  vid.addEventListener('play', paintCtl); vid.addEventListener('pause', paintCtl);
-  vid.addEventListener('ended', () => {
-    tour.state = 'ended'; cancelAnimationFrame(tour.raf);
-    closeCases(); moveTo(STEPS - 1);                 // finish on the full picture
-    setTimeout(() => stopTour(true), 2200);
-  });
-
-  // ---------- cue recorder (?record): logs the viewer's navigation with video timestamps ----------
-  const recLog = [];
-  const stamp = () => Math.round(vid.currentTime * 10) / 10;
-  function logCue(c) {
-    if (!RECORD || (tour.state !== 'playing' && tour.state !== 'paused')) return;
-    recLog.push(Object.assign({ t: stamp() }, c)); renderRec();
-  }
-  function renderRec() { $('recOut').value = JSON.stringify(recLog); $('recN').textContent = recLog.length; }
-  if (RECORD) {
-    $('rec').hidden = false;
-    $('recClear').onclick = () => { recLog.length = 0; renderRec(); };
-    $('recCopy').onclick = () => {
-      const o = $('recOut'); o.select();
-      (navigator.clipboard ? navigator.clipboard.writeText(o.value) : Promise.reject()).catch(() => document.execCommand('copy'));
-    };
-  }
+  addEventListener('resize', () => { if (isMobile() !== world.classList.contains('m')) layout(); apply(false); });
 
   // open on the full picture, then zoom into the title section
   // the left-most tech logo sits directly under the "M" of "GTM"
